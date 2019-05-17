@@ -25,7 +25,7 @@ function disableGridItems() {
     const disabledItems = 15;
 
     for(let i = 0; i < disabledItems; i++) {
-        grid.childNodes[getRandomInt(0, 99)].classList.add('disabled')
+        grid.childNodes[getRandomInt(1, 98)].classList.add('disabled')
     }
 }
 
@@ -36,6 +36,19 @@ function getRandomInt(min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
+/**
+ * Characters
+ */
+function defaultCharacters() {
+    grid.childNodes[0].style.background = 'url(assets/img/police.png)';
+    grid.childNodes[99].style.background = 'url(assets/img/thief.png)';
+
+    grid.childNodes[0].style.backgroundSize = 'contain';
+    grid.childNodes[0].style.backgroundRepeat = 'no-repeat';
+    grid.childNodes[99].style.backgroundSize = 'contain';
+    grid.childNodes[99].style.backgroundRepeat = 'no-repeat';
+}
+
  
 /**
  * Init
@@ -43,4 +56,5 @@ function getRandomInt(min, max) {
 (function init() {
     drawGrid();
     disableGridItems();
+    defaultCharacters();
 })()
