@@ -27,6 +27,19 @@ body {
             border: 1px solid #eee;
             background: #c9c9c9;
             box-sizing: border-box;
+            cursor: pointer;
+
+            &:hover {
+                background: #eee;
+            }
+        }
+
+        .grid-item.disabled {
+            pointer-events: none;
+            background: #5d5d5d;
+            &:hover {
+                background: #5d5d5d;
+            }
         }
     }
 }
