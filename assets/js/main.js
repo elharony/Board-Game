@@ -1,5 +1,7 @@
 const grid = document.querySelector('.grid');
 
+let policePos = 0
+let thiefPos = 99
 /**
  * Draw the Grid
  */
@@ -40,13 +42,8 @@ function getRandomInt(min, max) {
  * Characters
  */
 function defaultCharacters() {
-    grid.childNodes[0].style.background = 'url(assets/img/police.png)';
-    grid.childNodes[99].style.background = 'url(assets/img/thief.png)';
-
-    grid.childNodes[0].style.backgroundSize = 'contain';
-    grid.childNodes[0].style.backgroundRepeat = 'no-repeat';
-    grid.childNodes[99].style.backgroundSize = 'contain';
-    grid.childNodes[99].style.backgroundRepeat = 'no-repeat';
+    grid.childNodes[policePos].classList.add('current-police')
+    grid.childNodes[thiefPos].classList.add('current-thief')
 }
 
  
