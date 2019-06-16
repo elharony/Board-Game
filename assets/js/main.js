@@ -20,13 +20,12 @@ function drawGrid() {
     let gridCells = gridSize * gridSize;
 
     for(let i = 0; i < gridCells; i++) {
-        grid.appendChild(createGridItem(i))
+        grid.appendChild(createGridItem())
     }
 }
-function createGridItem(index) {
+function createGridItem() {
     const gridItem = document.createElement('div');
     gridItem.classList.add('grid-item');
-    gridItem.innerHTML = index;
     return gridItem;
 }
 
@@ -41,9 +40,9 @@ function isAvailableCell(index) {
 
 
 /**
- * Disabled Cells
+ * Place `Disabled Cells`
  */
-function disabledCells() {
+function placeDisabledCells() {
     const disabledCellsCount = 40;
 
     function disableCell() {
@@ -72,6 +71,49 @@ function disabledCells() {
 
 }
 
+/**
+ * Place `Weapons`
+ */
+function placeWeapons() {
+    const weaponsCount = 5;
+    const weapons = [
+        {
+            'type': 'defense',
+            'className': 'weapon-defense'
+        },
+        {
+            'type': 'attack',
+            'className': 'weapon-attack'
+        }
+    ]
+
+    function addWeapon(weapon) {
+        let rand = getRandomInt(0, 399);
+
+        // We've found an available cell
+        if(isAvailableCell(rand)) {
+
+            // Place the weapon
+            grid.childNodes[rand].classList.add(weapon.className);
+
+            // Make its index unavailable for later usage
+            unavailableCells.push(rand);
+
+        } else {
+
+            // Try again!
+            return addWeapon(weapon);
+        }
+    }
+
+    // Palce X amount of weapons
+    for(let i = 0; i < weaponsCount; i++) {
+        addWeapon(weapons[0]); // Defense
+        addWeapon(weapons[1]); // Attack
+    }
+}
+
+
 // SOF: https://stackoverflow.com/a/1527820/5560399
 function getRandomInt(min, max) {
     min = Math.ceil(min);
@@ -93,6 +135,7 @@ function getRandomInt(min, max) {
  */
 (function init() {
     drawGrid();
-    disabledCells();
+    placeDisabledCells();
+    placeWeapons();
     // defaultCharacters();
 })()

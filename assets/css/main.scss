@@ -43,13 +43,22 @@ body {
             background-size: contain;
             background-repeat: no-repeat;
         }
-
         .grid-item.disabled {
             pointer-events: none;
             background: #5d5d5d;
             &:hover {
                 background: #5d5d5d;
             }
+        }
+        .grid-item.weapon-attack {
+            background: url(../img/weapon-attack.png);
+            background-size: contain;
+            background-repeat: no-repeat;
+        }
+        .grid-item.weapon-defense {
+            background: url(../img/weapon-defense.png);
+            background-size: contain;
+            background-repeat: no-repeat;
         }
     }
 }
