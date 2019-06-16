@@ -1,5 +1,5 @@
 const grid = document.querySelector('.grid');
-const gridSize = 10;
+const gridSize = 20;
 
 // Store all `unavailable` cells
 let unavailableCells = [];
@@ -44,11 +44,10 @@ function isAvailableCell(index) {
  * Disabled Cells
  */
 function disabledCells() {
-    const disabledCellsCount = 15;
-
+    const disabledCellsCount = 40;
 
     function disableCell() {
-        let rand = getRandomInt(0, 99);
+        let rand = getRandomInt(0, 399);
 
         // We've found an available cell
         if(isAvailableCell(rand)) {
