@@ -113,6 +113,47 @@ function placeWeapons() {
     }
 }
 
+/**
+ * Place `2 Players`
+ */
+function placePlayers() {
+    const players = [
+        {
+            'name': 'Policeman',
+            'className': 'player-police',
+            'range': [0, 99]
+        },
+        {
+            'name': 'Thief',
+            'className': 'player-thief',
+            'range': [300, 399]
+        }
+    ]
+
+    function addPlayer(player) {
+        let rand = getRandomInt(player.range[0], player.range[1]);
+
+        // We've found an available cell
+        if(isAvailableCell(rand)) {
+
+            // Place the player
+            grid.childNodes[rand].classList.add(player.className);
+
+            // Make its index unavailable for later usage
+            unavailableCells.push(rand);
+
+        } else {
+
+            // Try again!
+            return addPlayer(player);
+        }
+    }
+
+    // Palce X amount of players
+    addPlayer(players[0]); // Policeman
+    addPlayer(players[1]); // Thief
+}
+
 
 // SOF: https://stackoverflow.com/a/1527820/5560399
 function getRandomInt(min, max) {
@@ -137,5 +178,5 @@ function getRandomInt(min, max) {
     drawGrid();
     placeDisabledCells();
     placeWeapons();
-    // defaultCharacters();
+    placePlayers();
 })()
