@@ -1,34 +1,76 @@
 const grid = document.querySelector('.grid');
+const gridSize = 10;
 
-let policePos = 0
-let thiefPos = 99
+// Store all `unavailable` cells
+let unavailableCells = [];
+
+
+/**
+ * 1. Draw the grid
+ * 2. Place `dimmed` cells
+ * 3. Place `weapons`
+ * 4. Place 2 `players` randomaly
+ */
+
+
 /**
  * Draw the Grid
  */
 function drawGrid() {
-    let gridSize = 100;
+    let gridCells = gridSize * gridSize;
 
-    for(let i = 0; i < gridSize; i++) {
-        grid.appendChild(createGridItem())
+    for(let i = 0; i < gridCells; i++) {
+        grid.appendChild(createGridItem(i))
     }
 }
-
-function createGridItem() {
+function createGridItem(index) {
     const gridItem = document.createElement('div');
     gridItem.classList.add('grid-item');
-    return gridItem
+    gridItem.innerHTML = index;
+    return gridItem;
 }
 
 
 /**
- * Disabled Grid Items
+ * isAvailableCell?
  */
-function disableGridItems() {
-    const disabledItems = 15;
+function isAvailableCell(index) {
+    let result = !(unavailableCells.includes(index)); // `!` To get "Not Available"
+    return result;
+}
 
-    for(let i = 0; i < disabledItems; i++) {
-        grid.childNodes[getRandomInt(1, 98)].classList.add('disabled')
+
+/**
+ * Disabled Cells
+ */
+function disabledCells() {
+    const disabledCellsCount = 15;
+
+
+    function disableCell() {
+        let rand = getRandomInt(0, 99);
+
+        // We've found an available cell
+        if(isAvailableCell(rand)) {
+
+            // Dimmed that cell
+            grid.childNodes[rand].classList.add('disabled');
+
+            // Make its index unavailable for later usage
+            unavailableCells.push(rand);
+
+        } else {
+
+            // Try again!
+            return disableCell();
+        }
     }
+
+    // Disable X amount of cells
+    for(let i = 0; i < disabledCellsCount; i++) {
+        disableCell();
+    }
+
 }
 
 // SOF: https://stackoverflow.com/a/1527820/5560399
@@ -41,10 +83,10 @@ function getRandomInt(min, max) {
 /**
  * Characters
  */
-function defaultCharacters() {
-    grid.childNodes[policePos].classList.add('current-police')
-    grid.childNodes[thiefPos].classList.add('current-thief')
-}
+// function defaultCharacters() {
+//     grid.childNodes[policePos].classList.add('current-police')
+//     grid.childNodes[thiefPos].classList.add('current-thief')
+// }
 
  
 /**
@@ -52,6 +94,6 @@ function defaultCharacters() {
  */
 (function init() {
     drawGrid();
-    disableGridItems();
-    defaultCharacters();
+    disabledCells();
+    // defaultCharacters();
 })()
