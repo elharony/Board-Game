@@ -17,13 +17,13 @@ body {
     .grid {
         display: flex;
         flex-wrap: wrap;
-        width: 500px;
-        height: 500px;
+        width: 700px;
+        height: 700px;
         background: #eee;
 
         .grid-item {
-            width: 25px;
-            height: 25px;
+            width: 35px;
+            height: 35px;
             border: 1px solid #eee;
             background: #c9c9c9;
             box-sizing: border-box;
