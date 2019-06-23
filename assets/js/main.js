@@ -1,7 +1,8 @@
 const grid = document.querySelector('.grid');
-const gridSize = 20;
+const GRID_SIZE = 10;
 
 // Store all `unavailable` cells
+let availableCells = [];
 let unavailableCells = [];
 
 
@@ -17,15 +18,17 @@ let unavailableCells = [];
  * Draw the Grid
  */
 function drawGrid() {
-    let gridCells = gridSize * gridSize;
-
-    for(let i = 0; i < gridCells; i++) {
-        grid.appendChild(createGridItem())
+    for(let row = 0; row < GRID_SIZE; row++) {
+        for(let col = 0; col < GRID_SIZE; col++) {
+            grid.appendChild(createGridItem(row, col));
+            availableCells.push([row, col]);
+        }
     }
 }
-function createGridItem() {
+function createGridItem(row, col) {
     const gridItem = document.createElement('div');
     gridItem.classList.add('grid-item');
+    gridItem.classList.add(`cell_${row}_${col}`);
     return gridItem;
 }
 
@@ -33,8 +36,8 @@ function createGridItem() {
 /**
  * isAvailableCell?
  */
-function isAvailableCell(index) {
-    let result = !(unavailableCells.includes(index)); // `!` To get "Not Available"
+function isAvailableCell(row, col) {
+    let result = !(unavailableCells.includes(`cell_${row}_${col}`)); // `!` To get "Not Available"
     return result;
 }
 
@@ -43,29 +46,30 @@ function isAvailableCell(index) {
  * Place `Disabled Cells`
  */
 function placeDisabledCells() {
-    const disabledCellsCount = 40;
+    const DISABLED_CELLS = 10;
 
     function disableCell() {
-        let rand = getRandomInt(0, 399);
+        let randCellRow = getRandomInt(0, 9);
+        let randCellCol = getRandomInt(0, 9);
 
         // We've found an available cell
-        if(isAvailableCell(rand)) {
+        if(isAvailableCell(randCellRow, randCellCol)) {
 
             // Dimmed that cell
-            grid.childNodes[rand].classList.add('disabled');
+            let dimmedCell = document.querySelector(`.cell_${randCellRow}_${randCellCol}`);
+            dimmedCell.classList.add('disabled');
 
-            // Make its index unavailable for later usage
-            unavailableCells.push(rand);
+            // Make that cell unavailable for later use
+            unavailableCells.push(`cell_${randCellRow}_${randCellCol}`);
 
         } else {
-
             // Try again!
             return disableCell();
         }
     }
 
     // Disable X amount of cells
-    for(let i = 0; i < disabledCellsCount; i++) {
+    for(let i = 0; i < DISABLED_CELLS; i++) {
         disableCell();
     }
 
@@ -75,8 +79,8 @@ function placeDisabledCells() {
  * Place `Weapons`
  */
 function placeWeapons() {
-    const weaponsCount = 5;
-    const weapons = [
+    const WEAPONS_COUNT = 3;
+    const WEAPONS = [
         {
             'type': 'defense',
             'className': 'weapon-defense'
@@ -88,28 +92,29 @@ function placeWeapons() {
     ]
 
     function addWeapon(weapon) {
-        let rand = getRandomInt(0, 399);
+        let randCellRow = getRandomInt(0, 9);
+        let randCellCol = getRandomInt(0, 9);
 
         // We've found an available cell
-        if(isAvailableCell(rand)) {
+        if(isAvailableCell(randCellRow, randCellCol)) {
 
-            // Place the weapon
-            grid.childNodes[rand].classList.add(weapon.className);
+            // Dimmed that cell
+            let dimmedCell = document.querySelector(`.cell_${randCellRow}_${randCellCol}`);
+            dimmedCell.classList.add(weapon.className);
 
-            // Make its index unavailable for later usage
-            unavailableCells.push(rand);
+            // Make that cell unavailable for later use
+            unavailableCells.push(`cell_${randCellRow}_${randCellCol}`);
 
         } else {
-
             // Try again!
             return addWeapon(weapon);
         }
     }
 
     // Palce X amount of weapons
-    for(let i = 0; i < weaponsCount; i++) {
-        addWeapon(weapons[0]); // Defense
-        addWeapon(weapons[1]); // Attack
+    for(let i = 0; i < WEAPONS_COUNT; i++) {
+        addWeapon(WEAPONS[0]); // Defense
+        addWeapon(WEAPONS[1]); // Attack
     }
 }
 
@@ -117,41 +122,57 @@ function placeWeapons() {
  * Place `2 Players`
  */
 function placePlayers() {
-    const players = [
+    const PLAYERS = [
         {
             'name': 'Policeman',
             'className': 'player-police',
-            'range': [0, 99]
+            'rowMin': 0,
+            'rowMax': 3,
+            'colMin': 0,
+            'colMax': 9
         },
         {
             'name': 'Thief',
             'className': 'player-thief',
-            'range': [300, 399]
+            'rowMin': 6,
+            'rowMax': 9,
+            'colMin': 0,
+            'colMax': 9
         }
     ]
 
     function addPlayer(player) {
-        let rand = getRandomInt(player.range[0], player.range[1]);
+        let randCellRow = getRandomInt(0, 9);
+        let randCellCol = getRandomInt(0, 9);
 
-        // We've found an available cell
-        if(isAvailableCell(rand)) {
+        /* Keep players away */
+        if( (player.rowMin <= randCellRow && randCellRow <= player.rowMax) && 
+            (player.colMin < randCellCol && randCellCol < player.colMax) ) {
+                
+            // We've found an available cell
+            if(isAvailableCell(randCellRow, randCellCol)) {
 
-            // Place the player
-            grid.childNodes[rand].classList.add(player.className);
+                // Dimmed that cell
+                let dimmedCell = document.querySelector(`.cell_${randCellRow}_${randCellCol}`);
+                dimmedCell.classList.add(player.className);
 
-            // Make its index unavailable for later usage
-            unavailableCells.push(rand);
+                // Make that cell unavailable for later use
+                unavailableCells.push(`cell_${randCellRow}_${randCellCol}`);
+
+            } else {
+                // Try again!
+                return addPlayer(player);
+            }
 
         } else {
-
             // Try again!
             return addPlayer(player);
         }
     }
 
     // Palce X amount of players
-    addPlayer(players[0]); // Policeman
-    addPlayer(players[1]); // Thief
+    addPlayer(PLAYERS[0]); // Policeman
+    addPlayer(PLAYERS[1]); // Thief
 }
 
 
