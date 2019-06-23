@@ -41,6 +41,19 @@ function isAvailableCell(row, col) {
     return result;
 }
 
+/**
+ * Place Item
+ */
+function placeItem(row, col, itemClassName) {
+
+    // Place item
+    let selectedCell = document.querySelector(`.cell_${row}_${col}`);
+    selectedCell.classList.add(itemClassName);
+
+    // Make that cell unavailable for later use
+    unavailableCells.push(`cell_${row}_${col}`);
+}
+
 
 /**
  * Place `Disabled Cells`
@@ -55,12 +68,7 @@ function placeDisabledCells() {
         // We've found an available cell
         if(isAvailableCell(randCellRow, randCellCol)) {
 
-            // Dimmed that cell
-            let dimmedCell = document.querySelector(`.cell_${randCellRow}_${randCellCol}`);
-            dimmedCell.classList.add('disabled');
-
-            // Make that cell unavailable for later use
-            unavailableCells.push(`cell_${randCellRow}_${randCellCol}`);
+            placeItem(randCellRow, randCellCol, 'disabled');
 
         } else {
             // Try again!
@@ -98,12 +106,7 @@ function placeWeapons() {
         // We've found an available cell
         if(isAvailableCell(randCellRow, randCellCol)) {
 
-            // Dimmed that cell
-            let dimmedCell = document.querySelector(`.cell_${randCellRow}_${randCellCol}`);
-            dimmedCell.classList.add(weapon.className);
-
-            // Make that cell unavailable for later use
-            unavailableCells.push(`cell_${randCellRow}_${randCellCol}`);
+            placeItem(randCellRow, randCellCol, weapon.className);
 
         } else {
             // Try again!
@@ -152,12 +155,7 @@ function placePlayers() {
             // We've found an available cell
             if(isAvailableCell(randCellRow, randCellCol)) {
 
-                // Dimmed that cell
-                let dimmedCell = document.querySelector(`.cell_${randCellRow}_${randCellCol}`);
-                dimmedCell.classList.add(player.className);
-
-                // Make that cell unavailable for later use
-                unavailableCells.push(`cell_${randCellRow}_${randCellCol}`);
+                placeItem(randCellRow, randCellCol, player.className);
 
             } else {
                 // Try again!
@@ -182,14 +180,6 @@ function getRandomInt(min, max) {
     max = Math.floor(max);
     return Math.floor(Math.random() * (max - min + 1)) + min;
 }
-
-/**
- * Characters
- */
-// function defaultCharacters() {
-//     grid.childNodes[policePos].classList.add('current-police')
-//     grid.childNodes[thiefPos].classList.add('current-thief')
-// }
 
  
 /**
