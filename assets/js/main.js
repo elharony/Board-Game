@@ -1,5 +1,42 @@
-const grid = document.querySelector('.grid');
+// Grid Size
 const GRID_SIZE = 10;
+
+// Dimmed Cells
+const DISABLED_CELLS = 10;
+
+// Weapons
+const WEAPONS_COUNT = 3;
+const WEAPONS = [
+    {
+        'type': 'defense',
+        'className': 'weapon-defense'
+    },
+    {
+        'type': 'attack',
+        'className': 'weapon-attack'
+    }
+]
+
+// Players
+const PLAYERS = [
+    {
+        'name': 'Police',
+        'className': 'player-police',
+        'rowMin': 0,
+        'rowMax': 3,
+        'colMin': 0,
+        'colMax': 9
+    },
+    {
+        'name': 'Thief',
+        'className': 'player-thief',
+        'rowMin': 6,
+        'rowMax': 9,
+        'colMin': 0,
+        'colMax': 9
+    }
+]
+
 
 // Store all `unavailable` cells
 let availableCells = [];
@@ -17,6 +54,7 @@ let unavailableCells = [];
 /**
  * Draw the Grid
  */
+const grid = document.querySelector('.grid');
 function drawGrid() {
     for(let row = 0; row < GRID_SIZE; row++) {
         for(let col = 0; col < GRID_SIZE; col++) {
@@ -90,7 +128,6 @@ function isAvailableCell(row, col) {
  */
 function placeItem(row, col, itemClassName) {
 
-    // Place item
     let selectedCell = document.querySelector(`.cell_${row}_${col}`);
     selectedCell.classList.add(itemClassName);
 
@@ -103,7 +140,6 @@ function placeItem(row, col, itemClassName) {
  * Place `Disabled Cells`
  */
 function placeDisabledCells() {
-    const DISABLED_CELLS = 10;
 
     function disableCell() {
         let randCellRow = getRandomInt(0, 9);
@@ -131,17 +167,6 @@ function placeDisabledCells() {
  * Place `Weapons`
  */
 function placeWeapons() {
-    const WEAPONS_COUNT = 3;
-    const WEAPONS = [
-        {
-            'type': 'defense',
-            'className': 'weapon-defense'
-        },
-        {
-            'type': 'attack',
-            'className': 'weapon-attack'
-        }
-    ]
 
     function addWeapon(weapon) {
         let randCellRow = getRandomInt(0, 9);
@@ -180,24 +205,6 @@ function placeWeapons() {
  * Place `2 Players`
  */
 function placePlayers() {
-    const PLAYERS = [
-        {
-            'name': 'Policeman',
-            'className': 'player-police',
-            'rowMin': 0,
-            'rowMax': 3,
-            'colMin': 0,
-            'colMax': 9
-        },
-        {
-            'name': 'Thief',
-            'className': 'player-thief',
-            'rowMin': 6,
-            'rowMax': 9,
-            'colMin': 0,
-            'colMax': 9
-        }
-    ]
 
     function addPlayer(player) {
         let randCellRow = getRandomInt(0, 9);
