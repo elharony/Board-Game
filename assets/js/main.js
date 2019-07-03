@@ -1,48 +1,3 @@
-// Grid Size
-const GRID_SIZE = 10;
-
-// Dimmed Cells
-const DISABLED_CELLS = 10;
-
-// Weapons
-const WEAPONS_COUNT = 3;
-const WEAPONS = [
-    {
-        'type': 'defense',
-        'className': 'weapon-defense'
-    },
-    {
-        'type': 'attack',
-        'className': 'weapon-attack'
-    }
-]
-
-// Players
-const PLAYERS = [
-    {
-        'name': 'Police',
-        'className': 'player-police',
-        'rowMin': 0,
-        'rowMax': 3,
-        'colMin': 0,
-        'colMax': 9
-    },
-    {
-        'name': 'Thief',
-        'className': 'player-thief',
-        'rowMin': 6,
-        'rowMax': 9,
-        'colMin': 0,
-        'colMax': 9
-    }
-]
-
-
-// Store all `unavailable` cells
-let availableCells = [];
-let unavailableCells = [];
-
-
 /**
  * 1. Draw the grid
  * 2. Place `dimmed` cells
@@ -50,189 +5,195 @@ let unavailableCells = [];
  * 4. Place 2 `players`
  */
 
+let availableCells = [];
+let unavailableCells = [];
+
 
 /**
- * Draw the Grid
+ * Grid
  */
-const grid = document.querySelector('.grid');
-function drawGrid() {
-    for(let row = 0; row < GRID_SIZE; row++) {
-        for(let col = 0; col < GRID_SIZE; col++) {
-            grid.appendChild(createGridItem(row, col));
-            availableCells.push([row, col]);
+class Grid {
+
+    constructor(gridContainer, gridSize) { 
+        this.gridContainer = gridContainer;
+        this.gridSize = gridSize;
+    }
+
+    draw() {
+        for(let row = 0; row < this.gridSize; row++) {
+            for(let col = 0; col < this.gridSize; col++) {
+                this.gridContainer.appendChild(this.createGridItem(row, col));
+                availableCells.push([row, col]);
+            }
         }
     }
+
+    createGridItem(row, col) {
+        const gridItem = document.createElement('div');
+        gridItem.classList.add('grid-item');
+        gridItem.classList.add(`cell_${row}_${col}`);
+        return gridItem;
+    }
 }
-function createGridItem(row, col) {
-    const gridItem = document.createElement('div');
-    gridItem.classList.add('grid-item');
-    gridItem.classList.add(`cell_${row}_${col}`);
-    return gridItem;
-}
 
+class Item {
 
-/**
- * Nearby Cells 
- */
-function checkNearby(row, col) {
-
-    const avoidItems = ['weapon-attack', 'weapon-defense', 'player-police', 'player-thief'];
-
-    /* Reset row/col number if reaches the least/maximum */
-    row = (row == 0) ? 1 : row;
-    row = (row == 9) ? 8 : row;
-    col = (col == 0) ? 1 : col;
-    col = (col == 9) ? 8 : col;
-
-    /* Check nearby cells */
+    constructor(row, col, itemClassName) {
+        this.row = row;
+        this.col = col;
+        this.itemClassName = itemClassName;
+    }
 
     /**
-     * Example: (5, 6)
-     *
-     *          [4, 6]
-     *   [5, 5] [5, 6] [5, 7]
-     *          [6, 6] 
-     */
-    let topCell = document.querySelector(`.cell_${row - 1}_${col}`);
-    let bottomCell = document.querySelector(`.cell_${row + 1}_${col}`);
-    let rightCell = document.querySelector(`.cell_${row}_${col + 1}`);
-    let leftCell = document.querySelector(`.cell_${row}_${col - 1}`);
+    * Nearby Cells 
+    */
+    checkNearby(row, col) {
+
+        const avoidItems = ['weapon-attack', 'weapon-defense', 'player-police', 'player-thief'];
     
-    // Check for nearby weapons
-    for(let item = 0; item < avoidItems.length; item++) {
-        if(
-            topCell.classList.contains(avoidItems[item]) ||
-            bottomCell.classList.contains(avoidItems[item]) ||
-            rightCell.classList.contains(avoidItems[item]) ||
-            leftCell.classList.contains(avoidItems[item])
-        ) {
-            return false;
-        } else {
-            return true;
-        }
-    }
-}
+        /* Reset row/col number if reaches the least/maximum */
+        row = (row == 0) ? 1 : row;
+        row = (row == 9) ? 8 : row;
+        col = (col == 0) ? 1 : col;
+        col = (col == 9) ? 8 : col;
 
+        /* Check nearby cells */
 
-/**
- * isAvailableCell?
- */
-function isAvailableCell(row, col) {
-    let result = !(unavailableCells.includes(`cell_${row}_${col}`)); // `!` To get "Not Available"
-    return result;
-}
-
-
-/**
- * Place Item
- */
-function placeItem(row, col, itemClassName) {
-
-    let selectedCell = document.querySelector(`.cell_${row}_${col}`);
-    selectedCell.classList.add(itemClassName);
-
-    // Make that cell unavailable for later use
-    unavailableCells.push(`cell_${row}_${col}`);
-}
-
-
-/**
- * Place `Disabled Cells`
- */
-function placeDisabledCells() {
-
-    function disableCell() {
-        let randCellRow = getRandomInt(0, 9);
-        let randCellCol = getRandomInt(0, 9);
-
-        // We've found an available cell
-        if(isAvailableCell(randCellRow, randCellCol)) {
-
-            placeItem(randCellRow, randCellCol, 'disabled');
-
-        } else {
-            // Try again!
-            return disableCell();
-        }
-    }
-
-    // Disable X amount of cells
-    for(let i = 0; i < DISABLED_CELLS; i++) {
-        disableCell();
-    }
-
-}
-
-/**
- * Place `Weapons`
- */
-function placeWeapons() {
-
-    function addWeapon(weapon) {
-        let randCellRow = getRandomInt(0, 9);
-        let randCellCol = getRandomInt(0, 9);
-
-        // We've found an available cell
-        if(isAvailableCell(randCellRow, randCellCol)) {
-
-            // Is there any nearby weapons?
-            if(checkNearby(randCellRow, randCellCol)) {
-
-                placeItem(randCellRow, randCellCol, weapon.className);
-
+        /**
+        * Example: (5, 6)
+        *
+        *          [4, 6]
+        *   [5, 5] [5, 6] [5, 7]
+        *          [6, 6] 
+        */
+        let topCell = document.querySelector(`.cell_${row - 1}_${col}`);
+        let bottomCell = document.querySelector(`.cell_${row + 1}_${col}`);
+        let rightCell = document.querySelector(`.cell_${row}_${col + 1}`);
+        let leftCell = document.querySelector(`.cell_${row}_${col - 1}`);
+        
+        // Check for nearby weapons
+        for(let item = 0; item < avoidItems.length; item++) {
+            if(
+                topCell.classList.contains(avoidItems[item]) ||
+                bottomCell.classList.contains(avoidItems[item]) ||
+                rightCell.classList.contains(avoidItems[item]) ||
+                leftCell.classList.contains(avoidItems[item])
+            ) {
+                return false;
             } else {
-
-                // Try again!
-                return addWeapon(weapon);
-
+                return true;
             }
-            
-
-        } else {
-            // Try again!
-            return addWeapon(weapon);
         }
     }
 
-    // Palce X amount of weapons
-    for(let i = 0; i < WEAPONS_COUNT; i++) {
-        addWeapon(WEAPONS[0]); // Defense
-        addWeapon(WEAPONS[1]); // Attack
+    /**
+     * isAvailableCell?
+     */
+    isAvailableCell(row, col) {
+        let result = !(unavailableCells.includes(`cell_${row}_${col}`)); // `!` To get "Not Available"
+        return result;
+    }
+
+    /**
+     * Place Item
+     */
+    placeItem(row, col, itemClassName) {
+
+        let selectedCell = document.querySelector(`.cell_${row}_${col}`);
+        selectedCell.classList.add(itemClassName);
+
+        // Make that cell unavailable for later use
+        unavailableCells.push(`cell_${row}_${col}`);
+    }
+    
+}
+
+class DimmedCell extends Item {
+
+    dimCell() {
+
+        let randCellRow = getRandomInt(0, 9);
+        let randCellCol = getRandomInt(0, 9);
+
+        // We've found an available cell
+        if(this.isAvailableCell(randCellRow, randCellCol)) {
+
+            this.placeItem(randCellRow, randCellCol, 'disabled');
+
+        } else {
+
+            // Try again!
+            return this.dimCell();
+        }
     }
 }
 
-/**
- * Place `2 Players`
- */
-function placePlayers() {
+class Player extends Item {
 
-    function addPlayer(player) {
+    constructor(player) {
+        super(player);
+        this.rowMin = player.rowMin;
+        this.rowMax = player.rowMax;
+        this.colMin = player.colMin;
+        this.colMax = player.colMax;
+        this.className = player.className;
+    }
+
+    add() {
         let randCellRow = getRandomInt(0, 9);
         let randCellCol = getRandomInt(0, 9);
 
         /* Keep players away */
-        if( (player.rowMin <= randCellRow && randCellRow <= player.rowMax) && 
-            (player.colMin < randCellCol && randCellCol < player.colMax) ) {
+        if( (this.rowMin <= randCellRow && randCellRow <= this.rowMax) && 
+            (this.colMin < randCellCol && randCellCol < this.colMax) ) {
                 
             // We've found an available cell
-            if(isAvailableCell(randCellRow, randCellCol)) {
+            if(this.isAvailableCell(randCellRow, randCellCol)) {
 
-                placeItem(randCellRow, randCellCol, player.className);
+                this.placeItem(randCellRow, randCellCol, this.className);
 
             } else {
                 // Try again!
-                return addPlayer(player);
+                return this.add();
             }
 
         } else {
             // Try again!
-            return addPlayer(player);
+            return this.add();
         }
     }
+}
 
-    // Palce X amount of players
-    addPlayer(PLAYERS[0]); // Policeman
-    addPlayer(PLAYERS[1]); // Thief
+class Weapon extends Item {
+
+    constructor(weapon) {
+        super(weapon);
+        this.className = weapon.className;
+    }
+
+    add() {
+        let randCellRow = getRandomInt(0, 9);
+        let randCellCol = getRandomInt(0, 9);
+
+        // We've found an available cell
+        if(this.isAvailableCell(randCellRow, randCellCol)) {
+
+            // Is there any nearby weapons?
+            if(this.checkNearby(randCellRow, randCellCol)) {
+
+                this.placeItem(randCellRow, randCellCol, this.className);
+
+            } else {
+
+                // Try again!
+                return this.add();
+
+            }
+        } else {
+            // Try again!
+            return this.add();
+        }
+    }
 }
 
 
@@ -243,13 +204,70 @@ function getRandomInt(min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
- 
 /**
  * Init
  */
 (function init() {
-    drawGrid();
-    placeDisabledCells();
-    placePlayers();
-    placeWeapons();
+
+    const DISABLED_CELLS = 10;
+    const WEAPONS_COUNT = 3;
+    const WEAPONS = [
+        {
+            'type': 'defense',
+            'className': 'weapon-defense'
+        },
+        {
+            'type': 'attack',
+            'className': 'weapon-attack'
+        }
+    ]
+    const PLAYERS = [
+        {
+            'name': 'Police',
+            'className': 'player-police',
+            'rowMin': 0,
+            'rowMax': 3,
+            'colMin': 0,
+            'colMax': 9
+        },
+        {
+            'name': 'Thief',
+            'className': 'player-thief',
+            'rowMin': 6,
+            'rowMax': 9,
+            'colMin': 0,
+            'colMax': 9
+        }
+    ]
+
+
+    // Grid
+    const grid = new Grid(document.querySelector('.grid'), 10);
+    grid.draw();
+
+
+    // Dimmed Cells
+    const dimmedCells = new DimmedCell();
+    for(let i = 0; i < DISABLED_CELLS; i++) {
+        dimmedCells.dimCell();
+    }
+
+
+    // Players
+    const player1 = new Player(PLAYERS[0]);
+    player1.add();
+
+    const player2 = new Player(PLAYERS[1]);
+    player2.add();
+
+
+    // Weapons
+    for(let i = 0; i < WEAPONS_COUNT; i++) {
+        const weapon1 = new Weapon(WEAPONS[0]);
+        weapon1.add();
+    
+        const weapon2 = new Weapon(WEAPONS[1]);
+        weapon2.add();
+    }
+
 })()
