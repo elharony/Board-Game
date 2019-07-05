@@ -17,6 +17,7 @@ class Grid {
     constructor(gridContainer, gridSize) { 
         this.gridContainer = gridContainer;
         this.gridSize = gridSize;
+        this.draw();
     }
 
     draw() {
@@ -174,6 +175,7 @@ class Player extends Item {
         this.colMin = player.colMin;
         this.colMax = player.colMax;
         this.className = player.className;
+        this.add();
     }
 
     add() {
@@ -206,6 +208,7 @@ class Weapon extends Item {
     constructor(weapon) {
         super(weapon);
         this.className = weapon.className;
+        this.add();
     }
 
     add() {
@@ -280,7 +283,6 @@ function getRandomInt(min, max) {
 
     // Grid
     const grid = new Grid(document.querySelector('.grid'), 10);
-    grid.draw();
 
 
     // Dimmed Cells
@@ -292,19 +294,13 @@ function getRandomInt(min, max) {
 
     // Players
     const player1 = new Player(PLAYERS[0]);
-    player1.add();
-
     const player2 = new Player(PLAYERS[1]);
-    player2.add();
 
 
     // Weapons
     for(let i = 0; i < WEAPONS_COUNT; i++) {
         const weapon1 = new Weapon(WEAPONS[0]);
-        weapon1.add();
-    
         const weapon2 = new Weapon(WEAPONS[1]);
-        weapon2.add();
     }
 
 })()
