@@ -70,19 +70,56 @@ class Item {
         let bottomCell = document.querySelector(`.cell_${row + 1}_${col}`);
         let rightCell = document.querySelector(`.cell_${row}_${col + 1}`);
         let leftCell = document.querySelector(`.cell_${row}_${col - 1}`);
+
+        console.log(`
+            Current item: ${row}, ${col}.
+            Top: ${row - 1}, ${col}
+            Right: ${row}, ${col + 1}
+            Bottom: ${row + 1}, ${col}
+            Left: ${row}, ${col - 1}
+            \n
+        `)
         
-        // Check for nearby weapons
-        for(let item = 0; item < avoidItems.length; item++) {
-            if(
-                topCell.classList.contains(avoidItems[item]) ||
-                bottomCell.classList.contains(avoidItems[item]) ||
-                rightCell.classList.contains(avoidItems[item]) ||
-                leftCell.classList.contains(avoidItems[item])
-            ) {
-                return false;
+        // Check for nearby items
+
+        if(
+            !(topCell.classList.contains(avoidItems[0]) ||
+            bottomCell.classList.contains(avoidItems[0]) ||
+            rightCell.classList.contains(avoidItems[0]) ||
+            leftCell.classList.contains(avoidItems[0]))
+        ) {
+            
+            if(!(topCell.classList.contains(avoidItems[1]) ||
+            bottomCell.classList.contains(avoidItems[1]) ||
+            rightCell.classList.contains(avoidItems[1]) ||
+            leftCell.classList.contains(avoidItems[1]))) {
+
+                if(!(topCell.classList.contains(avoidItems[2]) ||
+                bottomCell.classList.contains(avoidItems[2]) ||
+                rightCell.classList.contains(avoidItems[2]) ||
+                leftCell.classList.contains(avoidItems[2]))) {
+
+                    if(!(topCell.classList.contains(avoidItems[3]) ||
+                    bottomCell.classList.contains(avoidItems[3]) ||
+                    rightCell.classList.contains(avoidItems[3]) ||
+                    leftCell.classList.contains(avoidItems[3]))) {
+
+                        return true;
+
+                    } else {
+                        return false;
+                    }
+
+                } else {
+                    return false;
+                }
+
             } else {
-                return true;
+                return false;
             }
+            
+        } else {
+            return false;
         }
     }
 
