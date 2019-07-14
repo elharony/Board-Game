@@ -43,6 +43,8 @@ class Item {
         this.row = row;
         this.col = col;
         this.itemClassName = itemClassName;
+        this.avoidItems = ['weapon-attack', 'weapon-defense', 'player-police', 'player-thief'];
+
     }
 
     /**
@@ -50,8 +52,6 @@ class Item {
     */
     checkNearby(row, col) {
 
-        const avoidItems = ['weapon-attack', 'weapon-defense', 'player-police', 'player-thief'];
-    
         /* Check nearby cells */
 
         /**
@@ -66,38 +66,38 @@ class Item {
         let rightCell = document.querySelector(`.cell_${row}_${col + 1}`);
         let leftCell = document.querySelector(`.cell_${row}_${col - 1}`);
 
-        console.log(`
-            Current item: ${row}, ${col}.
-            Top: ${row - 1}, ${col}
-            Right: ${row}, ${col + 1}
-            Bottom: ${row + 1}, ${col}
-            Left: ${row}, ${col - 1}
-            \n
-        `)
+        // console.log(`
+        //     Current item: ${row}, ${col}.
+        //     Top: ${row - 1}, ${col}
+        //     Right: ${row}, ${col + 1}
+        //     Bottom: ${row + 1}, ${col}
+        //     Left: ${row}, ${col - 1}
+        //     \n
+        // `)
         
         // Check for nearby items
 
         if(
-            !(topCell.classList.contains(avoidItems[0]) ||
-            bottomCell.classList.contains(avoidItems[0]) ||
-            rightCell.classList.contains(avoidItems[0]) ||
-            leftCell.classList.contains(avoidItems[0]))
+            !(topCell.classList.contains(this.avoidItems[0]) ||
+            bottomCell.classList.contains(this.avoidItems[0]) ||
+            rightCell.classList.contains(this.avoidItems[0]) ||
+            leftCell.classList.contains(this.avoidItems[0]))
         ) {
             
-            if(!(topCell.classList.contains(avoidItems[1]) ||
-            bottomCell.classList.contains(avoidItems[1]) ||
-            rightCell.classList.contains(avoidItems[1]) ||
-            leftCell.classList.contains(avoidItems[1]))) {
+            if(!(topCell.classList.contains(this.avoidItems[1]) ||
+            bottomCell.classList.contains(this.avoidItems[1]) ||
+            rightCell.classList.contains(this.avoidItems[1]) ||
+            leftCell.classList.contains(this.avoidItems[1]))) {
 
-                if(!(topCell.classList.contains(avoidItems[2]) ||
-                bottomCell.classList.contains(avoidItems[2]) ||
-                rightCell.classList.contains(avoidItems[2]) ||
-                leftCell.classList.contains(avoidItems[2]))) {
+                if(!(topCell.classList.contains(this.avoidItems[2]) ||
+                bottomCell.classList.contains(this.avoidItems[2]) ||
+                rightCell.classList.contains(this.avoidItems[2]) ||
+                leftCell.classList.contains(this.avoidItems[2]))) {
 
-                    if(!(topCell.classList.contains(avoidItems[3]) ||
-                    bottomCell.classList.contains(avoidItems[3]) ||
-                    rightCell.classList.contains(avoidItems[3]) ||
-                    leftCell.classList.contains(avoidItems[3]))) {
+                    if(!(topCell.classList.contains(this.avoidItems[3]) ||
+                    bottomCell.classList.contains(this.avoidItems[3]) ||
+                    rightCell.classList.contains(this.avoidItems[3]) ||
+                    leftCell.classList.contains(this.avoidItems[3]))) {
 
                         return true;
 
@@ -136,6 +136,71 @@ class Item {
 
         // Make that cell unavailable for later use
         unavailableCells.push(`cell_${row}_${col}`);
+    }
+
+    /**
+     * Highlight
+     */
+
+    highlightAvailableCells(row, col) {
+        const MAX_HIGHLIGHTED_CELLS = 2;
+
+        // Top
+        for(let i = 1; i <= MAX_HIGHLIGHTED_CELLS; i++) {
+            let topCell = document.querySelector(`.cell_${row - i}_${col}`);
+
+            // Check if we are selecting an unavailable cell
+            if((row - i) < 0) {
+                break;
+            } else if(topCell.classList.contains('disabled')) {
+                break;
+            } else {
+                topCell.classList.add('highlighted');
+            }
+        }
+
+        // Right
+        for(let i = 1; i <= MAX_HIGHLIGHTED_CELLS; i++) {
+            let rightCell = document.querySelector(`.cell_${row}_${col + i}`);
+
+            // Check if we are selecting an unavailable cell
+            if((col + i) > 9) {
+                break;
+            } else if(rightCell.classList.contains('disabled')) {
+                break;
+            } else {
+                rightCell.classList.add('highlighted');
+            }
+        }
+
+        // Bottom
+        for(let i = 1; i <= MAX_HIGHLIGHTED_CELLS; i++) {
+            let bottomCell = document.querySelector(`.cell_${row + i}_${col}`);
+
+            // Check if we are selecting an unavailable cell
+            if(((row + i) > 9)) {
+                break;
+            } else if(bottomCell.classList.contains('disabled')) {
+                break;
+            } else {
+                bottomCell.classList.add('highlighted');
+            }
+        }
+
+        // Left
+        for(let i = 1; i <= MAX_HIGHLIGHTED_CELLS; i++) {
+            let leftCell = document.querySelector(`.cell_${row}_${col - i}`);
+
+            // Check if we are selecting an unavailable cell
+            if((col - i) < 0) {
+                break;
+            } else if(leftCell.classList.contains('disabled')) {
+                break;
+            } else {
+                leftCell.classList.add('highlighted');
+            }
+        }
+
     }
     
 }
@@ -184,6 +249,7 @@ class Player extends Item {
             if(this.isAvailableCell(randCellRow, randCellCol)) {
 
                 this.placeItem(randCellRow, randCellCol, this.className);
+                this.highlightAvailableCells(randCellRow, randCellCol);
 
             } else {
                 // Try again!
