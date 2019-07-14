@@ -52,12 +52,6 @@ class Item {
 
         const avoidItems = ['weapon-attack', 'weapon-defense', 'player-police', 'player-thief'];
     
-        /* Reset row/col number if reaches the least/maximum */
-        row = (row == 0) ? 1 : row;
-        row = (row == 9) ? 8 : row;
-        col = (col == 0) ? 1 : col;
-        col = (col == 9) ? 8 : col;
-
         /* Check nearby cells */
 
         /**
@@ -212,8 +206,8 @@ class Weapon extends Item {
     }
 
     add() {
-        let randCellRow = getRandomInt(0, 9);
-        let randCellCol = getRandomInt(0, 9);
+        let randCellRow = getRandomInt(1, 8);
+        let randCellCol = getRandomInt(1, 8);
 
         // We've found an available cell
         if(this.isAvailableCell(randCellRow, randCellCol)) {
