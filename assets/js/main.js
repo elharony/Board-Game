@@ -43,7 +43,7 @@ class Item {
         this.row = row;
         this.col = col;
         this.itemClassName = itemClassName;
-        this.avoidItems = ['weapon-attack', 'weapon-defense', 'player-police', 'player-thief'];
+        this.avoidItems = ['weapon-attack', 'weapon-defense', 'player-1', 'player-2'];
 
     }
 
@@ -296,6 +296,63 @@ class Weapon extends Item {
     }
 }
 
+class Engine {
+
+    constructor() {
+        this.playerTurn = 1;
+        this.controller();
+    }
+    
+    /**
+     * 
+     * Problem:
+     * --------
+     * Move the player from `A` (Current Location) to `B` (New Location)
+     * 
+     * 
+     * Solution:
+     * ---------
+     * - Determine/Specify `A`
+     * - Determine/Specify `B`
+     * - Hide the player from `A` and place it at `B`, regardless it's `highlighted` or not
+     * 
+     * 
+     */
+    controller() {
+        // const HIGHLIGHTED_CELLS = document.getElementsByClassName('.highlighted');
+        const gridItems = document.querySelectorAll('.grid-item');
+
+        /**
+         * Add `click` to each cell, and
+         * If clicked, `checkTurn` to check current player turn, and use the
+         * Returned value to get the player's element, and
+         * Remove the associated class from the old location, and
+         * Add that class to the new location
+         * Lastly... Change the turn to the next player!
+         */
+        
+        for(let item of gridItems) {
+            item.addEventListener('click', function() {
+                let player = this.checkTurn();
+                let playerElement = document.querySelector(`.${player}`);
+                playerElement.classList.remove(player);
+                item.classList.add(player);
+
+                this.playerTurn = (this.playerTurn == 1) ? 2 : 1;
+
+            }.bind(this))
+        }
+    }
+
+    checkTurn() {
+        if(this.playerTurn == 1) {
+            return 'player-1';
+        } else {
+            return 'player-2';
+        }
+    }
+}
+
 
 // SOF: https://stackoverflow.com/a/1527820/5560399
 function getRandomInt(min, max) {
@@ -324,7 +381,7 @@ function getRandomInt(min, max) {
     const PLAYERS = [
         {
             'name': 'Police',
-            'className': 'player-police',
+            'className': 'player-1',
             'rowMin': 0,
             'rowMax': 3,
             'colMin': 0,
@@ -332,7 +389,7 @@ function getRandomInt(min, max) {
         },
         {
             'name': 'Thief',
-            'className': 'player-thief',
+            'className': 'player-2',
             'rowMin': 6,
             'rowMax': 9,
             'colMin': 0,
@@ -362,5 +419,8 @@ function getRandomInt(min, max) {
         const weapon1 = new Weapon(WEAPONS[0]);
         const weapon2 = new Weapon(WEAPONS[1]);
     }
+
+    // Engine
+    new Engine();
 
 })()
