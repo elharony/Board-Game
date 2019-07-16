@@ -33,6 +33,8 @@ class Grid {
         const gridItem = document.createElement('div');
         gridItem.classList.add('grid-item');
         gridItem.classList.add(`cell_${row}_${col}`);
+        gridItem.setAttribute('data-row', row);
+        gridItem.setAttribute('data-col', col);
         return gridItem;
     }
 }
@@ -138,71 +140,6 @@ class Item {
         unavailableCells.push(`cell_${row}_${col}`);
     }
 
-    /**
-     * Highlight
-     */
-
-    highlightAvailableCells(row, col) {
-        const MAX_HIGHLIGHTED_CELLS = 2;
-
-        // Top
-        for(let i = 1; i <= MAX_HIGHLIGHTED_CELLS; i++) {
-            let topCell = document.querySelector(`.cell_${row - i}_${col}`);
-
-            // Check if we are selecting an unavailable cell
-            if((row - i) < 0) {
-                break;
-            } else if(topCell.classList.contains('disabled')) {
-                break;
-            } else {
-                topCell.classList.add('highlighted');
-            }
-        }
-
-        // Right
-        for(let i = 1; i <= MAX_HIGHLIGHTED_CELLS; i++) {
-            let rightCell = document.querySelector(`.cell_${row}_${col + i}`);
-
-            // Check if we are selecting an unavailable cell
-            if((col + i) > 9) {
-                break;
-            } else if(rightCell.classList.contains('disabled')) {
-                break;
-            } else {
-                rightCell.classList.add('highlighted');
-            }
-        }
-
-        // Bottom
-        for(let i = 1; i <= MAX_HIGHLIGHTED_CELLS; i++) {
-            let bottomCell = document.querySelector(`.cell_${row + i}_${col}`);
-
-            // Check if we are selecting an unavailable cell
-            if(((row + i) > 9)) {
-                break;
-            } else if(bottomCell.classList.contains('disabled')) {
-                break;
-            } else {
-                bottomCell.classList.add('highlighted');
-            }
-        }
-
-        // Left
-        for(let i = 1; i <= MAX_HIGHLIGHTED_CELLS; i++) {
-            let leftCell = document.querySelector(`.cell_${row}_${col - i}`);
-
-            // Check if we are selecting an unavailable cell
-            if((col - i) < 0) {
-                break;
-            } else if(leftCell.classList.contains('disabled')) {
-                break;
-            } else {
-                leftCell.classList.add('highlighted');
-            }
-        }
-
-    }
-    
 }
 
 class DimmedCell extends Item {
@@ -249,7 +186,6 @@ class Player extends Item {
             if(this.isAvailableCell(randCellRow, randCellCol)) {
 
                 this.placeItem(randCellRow, randCellCol, this.className);
-                this.highlightAvailableCells(randCellRow, randCellCol);
 
             } else {
                 // Try again!
@@ -300,7 +236,9 @@ class Engine {
 
     constructor() {
         this.playerTurn = 1;
+        this.MAX_HIGHLIGHTED_CELLS = 2;
         this.controller();
+        this.highlightAvailableCells();
     }
     
     /**
@@ -328,7 +266,8 @@ class Engine {
          * Returned value to get the player's element, and
          * Remove the associated class from the old location, and
          * Add that class to the new location
-         * Lastly... Change the turn to the next player!
+         * Change the player turn to the next player!
+         * Highlight available cells according to each player's turn
          */
         
         for(let item of gridItems) {
@@ -338,17 +277,113 @@ class Engine {
                 playerElement.classList.remove(player);
                 item.classList.add(player);
 
+                // Switch player turn
                 this.playerTurn = (this.playerTurn == 1) ? 2 : 1;
+
+                // Highlight Available Cells
+                this.highlightAvailableCells();
 
             }.bind(this))
         }
     }
 
     checkTurn() {
+        let turnElem = document.querySelector('#turn');
+
         if(this.playerTurn == 1) {
+            turnElem.innerHTML = `Player ${this.playerTurn}`;
             return 'player-1';
         } else {
+            turnElem.innerHTML = `Player ${this.playerTurn}`;
             return 'player-2';
+        }
+    }
+
+    highlightAvailableCells() {
+
+        /**
+         * Reset All Highlighted Cells
+         * So that whenever a player turn is switched, 
+         * It erased the previous player highlighted cells
+         */
+        this.resetHighlightedCells();
+
+
+        /**
+         * Which player turn is it (Initiialy, it's going to be `player-1`)
+         * Get the player `offset` (i.e. `row` & `col`)
+         * [IMPORTANT] Convert the `row` and `col` to `Int` values to avoid unexpected type coercion error
+         * Highlight available cells for selected player in all directions (`Top`, `Right`, `Bottom`, `Left`)
+         */
+        let player = this.checkTurn();
+        let playerElement = document.querySelector(`.${player}`);
+        console.log(playerElement);
+
+        let row = parseInt(playerElement.getAttribute('data-row'));
+        let col = parseInt(playerElement.getAttribute('data-col'));
+
+        // Top
+        for(let i = 1; i <= this.MAX_HIGHLIGHTED_CELLS; i++) {
+            let topCell = document.querySelector(`.cell_${row - i}_${col}`);
+
+            // Check if we are selecting an unavailable cell
+            if((row - i) < 0) {
+                break;
+            } else if(topCell.classList.contains('disabled')) {
+                break;
+            } else {
+                topCell.classList.add('highlighted');
+            }
+        }
+
+        // Right
+        for(let i = 1; i <= this.MAX_HIGHLIGHTED_CELLS; i++) {
+            let rightCell = document.querySelector(`.cell_${row}_${col + i}`);
+
+            // Check if we are selecting an unavailable cell
+            if((col + i) > 9) {
+                break;
+            } else if(rightCell.classList.contains('disabled')) {
+                break;
+            } else {
+                rightCell.classList.add('highlighted');
+            }
+        }
+
+        // Bottom
+        for(let i = 1; i <= this.MAX_HIGHLIGHTED_CELLS; i++) {
+            let bottomCell = document.querySelector(`.cell_${row + i}_${col}`);
+
+            // Check if we are selecting an unavailable cell
+            if(((row + i) > 9)) {
+                break;
+            } else if(bottomCell.classList.contains('disabled')) {
+                break;
+            } else {
+                bottomCell.classList.add('highlighted');
+            }
+        }
+
+        // Left
+        for(let i = 1; i <= this.MAX_HIGHLIGHTED_CELLS; i++) {
+            let leftCell = document.querySelector(`.cell_${row}_${col - i}`);
+
+            // Check if we are selecting an unavailable cell
+            if((col - i) < 0) {
+                break;
+            } else if(leftCell.classList.contains('disabled')) {
+                break;
+            } else {
+                leftCell.classList.add('highlighted');
+            }
+        }
+       
+    }
+
+    resetHighlightedCells() {
+        let highlightedCells = document.querySelectorAll('.highlighted');
+        for(let cell of highlightedCells) {
+            cell.classList.remove('highlighted');
         }
     }
 }
