@@ -3,33 +3,50 @@
     padding: 0;
 }
 
-body {
-    
-}
-
 .game-container {
     display: flex;
-    height: 100vh;
+    flex-wrap: wrap;
+    background: #f7f7f7;
     align-items: center;
     justify-content: center;
-    background: #e9e9e9;
+
+    @media (min-width: 850px) {
+        flex-wrap: nowrap;
+        height: 100vh;
+    }
 
     .grid {
         display: flex;
         flex-wrap: wrap;
-        width: 500px;
-        height: 500px;
+        width: 300px;
         background: #eee;
 
         .grid-item {
-            width: 50px;
-            height: 50px;
+            width: 30px;
+            height: 30px;
             border: 1px solid #eee;
             background: #c9c9c9;
             box-sizing: border-box;
             cursor: pointer;
             pointer-events: none;
         }
+
+        @media (min-width: 400px) {
+            width: 400px;
+            .grid-item {
+                width: 40px;
+                height: 40px;
+            }
+        }
+
+        @media (min-width: 500px) {
+            width: 500px;
+            .grid-item {
+                width: 50px;
+                height: 50px;
+            }
+        }
+
         .grid-item.player-1 {
             background: url(../img/police.png);
             background-size: contain;
@@ -61,4 +78,46 @@ body {
             pointer-events: all;
         }
     }
+
+    .dashboard {
+        width: 50%;
+        padding: 10px;
+        text-align: center;
+        background: #e0e0e0;
+        transition: all 300ms ease;
+        box-sizing: border-box;
+
+        .player-name {
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-bottom: 1rem;
+        }
+        .stats {
+            list-style: none;
+            font-size: 0.9rem;
+        }
+
+        @media (min-width: 850px) {
+            width: 150px;
+            margin-right: 25px;
+
+            .player-name {
+                font-size: 2rem;
+            }
+            .stats {
+                font-size: 1.1rem;
+            }
+        }
+    }
+    .dashboard.active-turn {
+        background: #a7a7a7;
+    }
+    .dashboard:nth-child(2) {
+        @media (min-width: 850px) {
+            order: 3;
+            margin-right: 0;
+            margin-left: 25px;
+        }
+    }
 }
+

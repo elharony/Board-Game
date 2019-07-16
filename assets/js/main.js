@@ -288,15 +288,26 @@ class Engine {
     }
 
     checkTurn() {
-        let turnElem = document.querySelector('#turn');
+        /**
+         * Reset Active Turn
+         * Add `active-turn` class to the current player's turn
+         * Return the current player, to be used at the `controller` method
+         */
+
+        this.resetTurn();
 
         if(this.playerTurn == 1) {
-            turnElem.innerHTML = `Player ${this.playerTurn}`;
+            document.querySelector(`#player_${this.playerTurn}_dashboard`).classList.add('active-turn');
             return 'player-1';
         } else {
-            turnElem.innerHTML = `Player ${this.playerTurn}`;
+            document.querySelector(`#player_${this.playerTurn}_dashboard`).classList.add('active-turn');
             return 'player-2';
         }
+    }
+
+    resetTurn() {
+        let activeTurn = document.querySelector('.active-turn');
+        activeTurn.classList.remove('active-turn');
     }
 
     highlightAvailableCells() {

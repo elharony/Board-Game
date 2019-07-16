@@ -12,7 +12,22 @@
 <body>
     
     <main class="game-container">
-        <h2 id="turn"></h2>
+        <div class="dashboard active-turn" id="player_1_dashboard">
+            <h2 class="player-name">Player 1</h2>
+            <ul class="stats">
+                <li>Health: <span id="health">100</span> </li>
+                <li>Attack: <span id="attack">10</span> </li>
+                <li>Defense: <span id="defense">10</span> </li>
+            </ul>
+        </div>
+        <div class="dashboard" id="player_2_dashboard">
+            <h2 class="player-name">Player 2</h2>
+            <ul class="stats">
+                <li>Health: <span id="health">100</span> </li>
+                <li>Attack: <span id="attack">10</span> </li>
+                <li>Defense: <span id="defense">10</span> </li>
+            </ul>
+        </div>
         <div class="grid"></div>
     </main>
 
