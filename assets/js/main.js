@@ -277,6 +277,9 @@ class Engine {
                 playerElement.classList.remove(player);
                 item.classList.add(player);
 
+                // Hit a weapon?
+                this.takeWeapon(item);
+
                 // Switch player turn
                 this.playerTurn = (this.playerTurn == 1) ? 2 : 1;
 
@@ -284,6 +287,14 @@ class Engine {
                 this.highlightAvailableCells();
 
             }.bind(this))
+        }
+    }
+
+    takeWeapon(landedCell) {
+        if(landedCell.classList.contains('weapon-attack')) {
+            console.log("You hit ATTACK weapon!");
+        } else if(landedCell.classList.contains('weapon-defense')) {
+            console.log("You hit SHIELD weapon");
         }
     }
 
