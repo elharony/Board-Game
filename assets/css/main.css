@@ -1,0 +1,155 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+
+.game-container {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-wrap: wrap;
+      flex-wrap: wrap;
+  background: #f7f7f7;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+}
+
+@media (min-width: 850px) {
+  .game-container {
+    -ms-flex-wrap: nowrap;
+        flex-wrap: nowrap;
+    height: 100vh;
+  }
+}
+
+.game-container .grid {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-wrap: wrap;
+      flex-wrap: wrap;
+  width: 300px;
+  background: #eee;
+}
+
+.game-container .grid .grid-item {
+  width: 30px;
+  height: 30px;
+  border: 1px solid #eee;
+  background: #c9c9c9;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+  cursor: pointer;
+  pointer-events: none;
+}
+
+@media (min-width: 400px) {
+  .game-container .grid {
+    width: 400px;
+  }
+  .game-container .grid .grid-item {
+    width: 40px;
+    height: 40px;
+  }
+}
+
+@media (min-width: 500px) {
+  .game-container .grid {
+    width: 500px;
+  }
+  .game-container .grid .grid-item {
+    width: 50px;
+    height: 50px;
+  }
+}
+
+.game-container .grid .grid-item.player-1 {
+  background: url(../img/police.png);
+  background-size: contain;
+  background-repeat: no-repeat;
+}
+
+.game-container .grid .grid-item.player-2 {
+  background: url(../img/thief.png);
+  background-size: contain;
+  background-repeat: no-repeat;
+}
+
+.game-container .grid .grid-item.disabled {
+  background: #5d5d5d;
+}
+
+.game-container .grid .grid-item.disabled:hover {
+  background: #5d5d5d;
+}
+
+.game-container .grid .grid-item.weapon-attack {
+  background: url(../img/weapon-attack.png);
+  background-size: contain;
+  background-repeat: no-repeat;
+}
+
+.game-container .grid .grid-item.weapon-defense {
+  background: url(../img/weapon-defense.png);
+  background-size: contain;
+  background-repeat: no-repeat;
+}
+
+.game-container .grid .grid-item.highlighted {
+  border: 2px inset #5d5d5d;
+  pointer-events: all;
+}
+
+.game-container .dashboard {
+  width: 50%;
+  padding: 10px;
+  text-align: center;
+  background: #e0e0e0;
+  -webkit-transition: all 300ms ease;
+  transition: all 300ms ease;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+}
+
+.game-container .dashboard .player-name {
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin-bottom: 1rem;
+}
+
+.game-container .dashboard .stats {
+  list-style: none;
+  font-size: 0.9rem;
+}
+
+@media (min-width: 850px) {
+  .game-container .dashboard {
+    width: 150px;
+    margin-right: 25px;
+  }
+  .game-container .dashboard .player-name {
+    font-size: 2rem;
+  }
+  .game-container .dashboard .stats {
+    font-size: 1.1rem;
+  }
+}
+
+.game-container .dashboard.active-turn {
+  background: #a7a7a7;
+}
+
+@media (min-width: 850px) {
+  .game-container .dashboard:nth-child(2) {
+    -webkit-box-ordinal-group: 4;
+        -ms-flex-order: 3;
+            order: 3;
+    margin-right: 0;
+    margin-left: 25px;
+  }
+}
+/*# sourceMappingURL=main.css.map */
