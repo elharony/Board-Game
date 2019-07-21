@@ -8,6 +8,31 @@
 let availableCells = [];
 let unavailableCells = [];
 
+const PLAYERS = [
+    {
+        'name': 'Police',
+        'className': 'player-1',
+        'rowMin': 0,
+        'rowMax': 3,
+        'colMin': 0,
+        'colMax': 9,
+        'health': 100,
+        'attack': 10,
+        'shield': 10
+    },
+    {
+        'name': 'Thief',
+        'className': 'player-2',
+        'rowMin': 6,
+        'rowMax': 9,
+        'colMin': 0,
+        'colMax': 9,
+        'health': 100,
+        'attack': 10,
+        'shield': 10
+    }
+]
+
 
 /**
  * Grid
@@ -197,6 +222,7 @@ class Player extends Item {
             return this.add();
         }
     }
+
 }
 
 class Weapon extends Item {
@@ -235,10 +261,21 @@ class Weapon extends Item {
 class Engine {
 
     constructor() {
-        this.playerTurn = 1;
+        this.playerTurn = 0;
         this.MAX_HIGHLIGHTED_CELLS = 2;
         this.controller();
         this.highlightAvailableCells();
+
+        // Players Stats Elements
+        document.querySelector('#player_1_dashboard .player-name').innerHTML = PLAYERS[0].name;
+        document.querySelector('#player_2_dashboard .player-name').innerHTML = PLAYERS[1].name;
+        this.player_1_health = document.querySelector('#player_1_dashboard #health');
+        this.player_1_attack = document.querySelector('#player_1_dashboard #attack');
+        this.player_1_shield = document.querySelector('#player_1_dashboard #shield');
+        this.player_2_health = document.querySelector('#player_2_dashboard #health');
+        this.player_2_attack = document.querySelector('#player_2_dashboard #attack');
+        this.player_2_shield = document.querySelector('#player_2_dashboard #shield');
+        this.updateStats();
     }
     
     /**
@@ -278,10 +315,10 @@ class Engine {
                 item.classList.add(player);
 
                 // Hit a weapon?
-                this.takeWeapon(item);
+                this.takeWeapon(this.playerTurn, item);
 
                 // Switch player turn
-                this.playerTurn = (this.playerTurn == 1) ? 2 : 1;
+                this.playerTurn = (this.playerTurn == 0) ? 1 : 0;
 
                 // Highlight Available Cells
                 this.highlightAvailableCells();
@@ -290,12 +327,38 @@ class Engine {
         }
     }
 
-    takeWeapon(landedCell) {
+
+    /**
+     * Check if the `landedCell` has a weapon or not
+     * If yes, remove that weapon
+     * Increase/Decrease stats based on the weapon
+     * Call `updateStats` to update stats change
+     * 
+     * @param {*} currentPlayer 
+     * @param {*} landedCell 
+     */
+    takeWeapon(currentPlayer, landedCell) {
         if(landedCell.classList.contains('weapon-attack')) {
-            console.log("You hit ATTACK weapon!");
+            landedCell.classList.remove('weapon-attack');
+            PLAYERS[currentPlayer].attack += 10;
+            this.updateStats();
         } else if(landedCell.classList.contains('weapon-defense')) {
-            console.log("You hit SHIELD weapon");
+            landedCell.classList.remove('weapon-defense');
+            PLAYERS[currentPlayer].shield += 10;
+            this.updateStats();
         }
+    }
+
+    /**
+     * Update stats after hitting a weapon
+     */
+    updateStats() {
+        this.player_1_health.innerHTML = PLAYERS[0].health;
+        this.player_1_attack.innerHTML = PLAYERS[0].attack;
+        this.player_1_shield.innerHTML = PLAYERS[0].shield;
+        this.player_2_health.innerHTML = PLAYERS[1].health;
+        this.player_2_attack.innerHTML = PLAYERS[1].attack;
+        this.player_2_shield.innerHTML = PLAYERS[1].shield;
     }
 
     checkTurn() {
@@ -304,18 +367,20 @@ class Engine {
          * Add `active-turn` class to the current player's turn
          * Return the current player, to be used at the `controller` method
          */
-
         this.resetTurn();
 
-        if(this.playerTurn == 1) {
-            document.querySelector(`#player_${this.playerTurn}_dashboard`).classList.add('active-turn');
+        if(this.playerTurn == 0) {
+            document.querySelector(`#player_${this.playerTurn+1}_dashboard`).classList.add('active-turn');
             return 'player-1';
         } else {
-            document.querySelector(`#player_${this.playerTurn}_dashboard`).classList.add('active-turn');
+            document.querySelector(`#player_${this.playerTurn+1}_dashboard`).classList.add('active-turn');
             return 'player-2';
         }
     }
 
+    /**
+     * Remove `active-turn` class from the previous turn
+     */
     resetTurn() {
         let activeTurn = document.querySelector('.active-turn');
         activeTurn.classList.remove('active-turn');
@@ -433,24 +498,6 @@ function getRandomInt(min, max) {
         {
             'type': 'attack',
             'className': 'weapon-attack'
-        }
-    ]
-    const PLAYERS = [
-        {
-            'name': 'Police',
-            'className': 'player-1',
-            'rowMin': 0,
-            'rowMax': 3,
-            'colMin': 0,
-            'colMax': 9
-        },
-        {
-            'name': 'Thief',
-            'className': 'player-2',
-            'rowMin': 6,
-            'rowMax': 9,
-            'colMin': 0,
-            'colMax': 9
         }
     ]
 
