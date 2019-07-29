@@ -125,3 +125,66 @@
     }
 }
 
+.combat-mode {
+    position: fixed;
+    visibility: hidden;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    background: rgba(0, 0, 0, 0.8);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+
+    .inner {
+        display: flex;
+        width: 80%;
+        background: #eee;
+
+        .player {
+            width: 50%;
+            padding: 2%;
+
+            .player-name {
+                font-size: 2rem;
+                margin-bottom: 20px;
+            }
+
+            .stats {
+                display: flex;
+                flex-wrap: wrap;
+                margin-bottom: 20px;
+                list-style: none;
+                
+                li {
+                    width: 50%;
+                }
+            }
+
+            .actions {
+                .attack, .defense {
+                    display: inline-block;
+                    width: 100px;
+                    height: 30px;
+                    line-height: 30px;
+                    border: 0;
+                    background: none;
+                    cursor: pointer;
+                }
+                .attack {
+                    background: #000;
+                    color: #fff;
+                }
+                .defense {
+                    background: #fff;
+                    color: #000;
+                }
+            }
+        }
+    }
+}
+.combat-mode.visible {
+    visibility: visible;
+}
+

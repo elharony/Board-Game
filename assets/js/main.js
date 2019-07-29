@@ -509,7 +509,8 @@ class Engine {
     }
 
     startCompatMode() {
-        
+        let combatModeModal = document.querySelector('.combat-mode');
+        combatModeModal.classList.add('visible');
     }
 }
 
