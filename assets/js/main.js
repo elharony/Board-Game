@@ -314,8 +314,16 @@ class Engine {
                 playerElement.classList.remove(player);
                 item.classList.add(player);
 
+                let playerRow = item.getAttribute('data-row');
+                let playerCol = item.getAttribute('data-col');
+
                 // Hit a weapon?
                 this.takeWeapon(this.playerTurn, item);
+
+                // Combat Mode?
+                if(this.isCombatMode(this.playerTurn, playerRow, playerCol)) {
+                    this.startCompatMode();
+                }
 
                 // Switch player turn
                 this.playerTurn = (this.playerTurn == 0) ? 1 : 0;
@@ -472,6 +480,36 @@ class Engine {
         for(let cell of highlightedCells) {
             cell.classList.remove('highlighted');
         }
+    }
+
+    isCombatMode(currentPlayer, row, col) {
+        row = parseInt(row);
+        col = parseInt(col);
+
+        let opponentPlayer = (currentPlayer == 0) ? 'player-2' : 'player-1';
+
+        let topCell = document.querySelector(`.cell_${row - 1}_${col}`);
+        let bottomCell = document.querySelector(`.cell_${row + 1}_${col}`);
+        let rightCell = document.querySelector(`.cell_${row}_${col + 1}`);
+        let leftCell = document.querySelector(`.cell_${row}_${col - 1}`);
+        
+        /**
+         * Is the `currentPlayer` closer to `opponentPlayer`?
+         */
+        if(
+            (topCell.classList.contains(opponentPlayer) ||
+            bottomCell.classList.contains(opponentPlayer) ||
+            rightCell.classList.contains(opponentPlayer) ||
+            leftCell.classList.contains(opponentPlayer))
+        ) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    startCompatMode() {
+        
     }
 }
 
