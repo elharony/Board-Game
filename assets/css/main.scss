@@ -77,6 +77,10 @@
             border: 2px inset #5d5d5d;
             pointer-events: all;
         }
+        .grid-item.player-1, .grid-item.player-2 {
+            pointer-events: none;
+            border: none;
+        }
     }
 
     .dashboard {
