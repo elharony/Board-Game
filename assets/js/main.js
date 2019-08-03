@@ -8,7 +8,7 @@
 let availableCells = [];
 let unavailableCells = [];
 
-const PLAYERS = [
+let PLAYERS = [
     {
         'name': 'Police',
         'className': 'player-1',
@@ -398,9 +398,11 @@ class Engine {
 
         if(this.playerTurn == 0) {
             document.querySelector(`#player_${this.playerTurn+1}_dashboard`).classList.add('active-turn');
+            document.querySelector(`#combat_player_${this.playerTurn+1}_dashboard`).classList.add('active-turn');
             return 'player-1';
         } else {
             document.querySelector(`#player_${this.playerTurn+1}_dashboard`).classList.add('active-turn');
+            document.querySelector(`#combat_player_${this.playerTurn+1}_dashboard`).classList.add('active-turn');
             return 'player-2';
         }
     }
@@ -409,8 +411,11 @@ class Engine {
      * Remove `active-turn` class from the previous turn
      */
     resetTurn() {
-        let activeTurn = document.querySelector('.active-turn');
-        activeTurn.classList.remove('active-turn');
+        let activeTurn = document.querySelectorAll('.active-turn');
+
+        for(let i = 0; i < activeTurn.length; i++) {
+            activeTurn[i].classList.remove('active-turn');
+        }
     }
 
     highlightAvailableCells() {
@@ -431,7 +436,6 @@ class Engine {
          */
         let player = this.checkTurn();
         let playerElement = document.querySelector(`.${player}`);
-        console.log(playerElement);
 
         let row = parseInt(playerElement.getAttribute('data-row'));
         let col = parseInt(playerElement.getAttribute('data-col'));
@@ -533,7 +537,30 @@ class Engine {
 
         this.updateCombatStats();
 
+        console.log(`Current Player: ${this.playerTurn}`);
+        console.log(`Current Player Stats: ${PLAYERS[this.playerTurn].health}`);
+
+        // Let current player turn ATTACK the other
+        let currentPlayer = this.playerTurn;
+        let nextPlayer = (currentPlayer == 1) ? 0 : 1;
+
+        console.log(`Current Player: ${currentPlayer}`);
+        console.log(`Next Player: ${nextPlayer}`);
+        
+        var myTimer = setInterval(() => {
+            PLAYERS[currentPlayer].health -= PLAYERS[nextPlayer].attack;
+            this.updateCombatStats();
+
+            if(PLAYERS[currentPlayer].health == 0) {
+                clearInterval(myTimer);
+            }
+
+        }, 1000)
+
+        // Switch player turn
+        // this.playerTurn = (this.playerTurn == 0) ? 1 : 0;
     }
+
 }
 
 
@@ -547,7 +574,7 @@ function getRandomInt(min, max) {
 /**
  * Init
  */
-(function init() {
+function init() {
 
     const DISABLED_CELLS = 10;
     const WEAPONS_COUNT = 3;
@@ -588,4 +615,6 @@ function getRandomInt(min, max) {
     // Engine
     new Engine();
 
-})()
+}
+
+init();

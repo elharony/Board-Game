@@ -3,6 +3,24 @@
     padding: 0;
 }
 
+
+.btn {
+    display: inline-block;
+    min-width: 100px;
+    padding: 5px 10px;
+    background: none;
+    background: #000;
+    color: #fff;
+    line-height: 30px;
+    border: 0;
+    cursor: pointer;
+
+    &:hover {
+        background: #fff;
+        color: #000;
+    }
+}
+
 .game-container {
     display: flex;
     flex-wrap: wrap;
@@ -139,12 +157,14 @@
 
     .inner {
         display: flex;
-        width: 80%;
+        flex-wrap: wrap;
+        width: 100%;
         background: #eee;
 
         .player {
             width: 50%;
             padding: 2%;
+            box-sizing: border-box;
 
             .player-name {
                 font-size: 2rem;
@@ -161,28 +181,18 @@
                     width: 50%;
                 }
             }
+        }
 
-            .actions {
-                .attack, .defense {
-                    display: inline-block;
-                    width: 100px;
-                    height: 30px;
-                    line-height: 30px;
-                    border: 0;
-                    background: none;
-                    cursor: pointer;
-                }
-                .attack {
-                    background: #000;
-                    color: #fff;
-                }
-                .defense {
-                    background: #fff;
-                    color: #000;
-                }
-            }
+        .player.active-turn {
+            background: #a7a7a7;
         }
     }
+
+    .actions {
+        width: 100%;
+    }
+
+
 }
 .combat-mode.visible {
     visibility: visible;
