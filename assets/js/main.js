@@ -564,8 +564,34 @@ class Engine {
 
     announceTheWinner(winner) {
         alert(`Aaaaand, the winner is: ${winner}`);
+        this.rematch();
     }
 
+    rematch() {
+
+        // Reset Player Stats
+        PLAYERS[0].health = 100;
+        PLAYERS[0].attack = 10;
+        PLAYERS[0].shield = 10;
+        PLAYERS[1].health = 100;
+        PLAYERS[1].attack = 10;
+        PLAYERS[1].shield = 10;
+        this.updateStats();
+        
+        // Reset Player Turn
+        this.playerTurn = 0;
+
+        // Hide Combat Mode
+        let combatModeModal = document.querySelector('.combat-mode');
+        combatModeModal.classList.remove('visible');
+
+        // Delete current grid
+        let grid = document.querySelector('.grid');
+        grid.innerHTML = '';
+
+        // Restart the game!
+        init();
+    }
 }
 
 
