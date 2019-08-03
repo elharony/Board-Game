@@ -276,6 +276,16 @@ class Engine {
         this.player_2_attack = document.querySelector('#player_2_dashboard #attack');
         this.player_2_shield = document.querySelector('#player_2_dashboard #shield');
         this.updateStats();
+
+        // Combat Mode Players Stats
+        document.querySelector('#combat_player_1_dashboard .player-name').innerHTML = PLAYERS[0].name;
+        document.querySelector('#combat_player_2_dashboard .player-name').innerHTML = PLAYERS[1].name;
+        this.combat_player_1_health = document.querySelector('#combat_player_1_dashboard #health');
+        this.combat_player_1_attack = document.querySelector('#combat_player_1_dashboard #attack');
+        this.combat_player_1_shield = document.querySelector('#combat_player_1_dashboard #shield');
+        this.combat_player_2_health = document.querySelector('#combat_player_2_dashboard #health');
+        this.combat_player_2_attack = document.querySelector('#combat_player_2_dashboard #attack');
+        this.combat_player_2_shield = document.querySelector('#combat_player_2_dashboard #shield');
     }
     
     /**
@@ -367,6 +377,15 @@ class Engine {
         this.player_2_health.innerHTML = PLAYERS[1].health;
         this.player_2_attack.innerHTML = PLAYERS[1].attack;
         this.player_2_shield.innerHTML = PLAYERS[1].shield;
+    }
+
+    updateCombatStats() {
+        this.combat_player_1_health.innerHTML = PLAYERS[0].health;
+        this.combat_player_1_attack.innerHTML = PLAYERS[0].attack;
+        this.combat_player_1_shield.innerHTML = PLAYERS[0].shield;
+        this.combat_player_2_health.innerHTML = PLAYERS[1].health;
+        this.combat_player_2_attack.innerHTML = PLAYERS[1].attack;
+        this.combat_player_2_shield.innerHTML = PLAYERS[1].shield;
     }
 
     checkTurn() {
@@ -511,6 +530,9 @@ class Engine {
     startCompatMode() {
         let combatModeModal = document.querySelector('.combat-mode');
         combatModeModal.classList.add('visible');
+
+        this.updateCombatStats();
+
     }
 }
 
