@@ -553,12 +553,17 @@ class Engine {
 
             if(PLAYERS[currentPlayer].health == 0) {
                 clearInterval(myTimer);
+                this.announceTheWinner(PLAYERS[nextPlayer].name);
             }
 
         }, 1000)
 
         // Switch player turn
         // this.playerTurn = (this.playerTurn == 0) ? 1 : 0;
+    }
+
+    announceTheWinner(winner) {
+        alert(`Aaaaand, the winner is: ${winner}`);
     }
 
 }
