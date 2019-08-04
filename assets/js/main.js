@@ -262,7 +262,7 @@ class Engine {
 
     constructor() {
         this.playerTurn = 0;
-        this.MAX_HIGHLIGHTED_CELLS = 2;
+        this.MAX_HIGHLIGHTED_CELLS = 3;
         this.controller();
         this.highlightAvailableCells();
 
@@ -555,9 +555,15 @@ class Engine {
     }
 
     fight(currentPlayer, nextPlayer, timer) {
-        PLAYERS[currentPlayer].health -= PLAYERS[nextPlayer].attack;
+
+        // damage =  Opponent Attack - (Current Player Shield / 100 * Opponent Attack)
+        let damage = PLAYERS[nextPlayer].attack - (PLAYERS[currentPlayer].shield / 100 * PLAYERS[nextPlayer].attack);
+        PLAYERS[currentPlayer].health -= damage;
+        
+        // Update stats
         this.updateCombatStats();
 
+        // Died?
         if(PLAYERS[currentPlayer].health <= 0) {
 
             // Set `health` to `0`, and avoid negative values
@@ -641,7 +647,7 @@ function getRandomInt(min, max) {
 function init() {
 
     const DISABLED_CELLS = 10;
-    const WEAPONS_COUNT = 3;
+    const WEAPONS_COUNT = 4;
     const WEAPONS = [
         {
             'type': 'defense',
@@ -655,7 +661,7 @@ function init() {
 
 
     // Grid
-    const grid = new Grid(document.querySelector('.grid'), 10);
+    new Grid(document.querySelector('.grid'), 10);
 
 
     // Dimmed Cells
