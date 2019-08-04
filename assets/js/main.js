@@ -262,7 +262,7 @@ class Engine {
 
     constructor() {
         this.playerTurn = 0;
-        this.MAX_HIGHLIGHTED_CELLS = 3;
+        this.MAX_HIGHLIGHTED_CELLS = 2;
         this.controller();
         this.highlightAvailableCells();
 
