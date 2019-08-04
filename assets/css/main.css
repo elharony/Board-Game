@@ -3,6 +3,24 @@
   padding: 0;
 }
 
+.btn {
+  display: inline-block;
+  min-width: 100px;
+  margin: 10px auto;
+  padding: 5px 10px;
+  background: none;
+  background: #000;
+  color: #fff;
+  line-height: 30px;
+  border: 0;
+  cursor: pointer;
+}
+
+.btn:hover {
+  background: #fff;
+  color: #000;
+}
+
 .game-container {
   display: -webkit-box;
   display: -ms-flexbox;
@@ -40,7 +58,7 @@
   width: 30px;
   height: 30px;
   border: 1px solid #eee;
-  background: #c9c9c9;
+  background: #fff;
   -webkit-box-sizing: border-box;
           box-sizing: border-box;
   cursor: pointer;
@@ -68,52 +86,65 @@
 }
 
 .game-container .grid .grid-item.player-1 {
-  background: url(../img/police.png);
+  background: url(../img/police.png), #fff;
   background-size: contain;
   background-repeat: no-repeat;
 }
 
 .game-container .grid .grid-item.player-2 {
-  background: url(../img/thief.png);
+  background: url(../img/thief.png), #fff;
   background-size: contain;
   background-repeat: no-repeat;
 }
 
 .game-container .grid .grid-item.disabled {
-  background: #5d5d5d;
-}
-
-.game-container .grid .grid-item.disabled:hover {
-  background: #5d5d5d;
+  background: url(../img/dimmed-cell.png), #fff;
+  background-size: contain;
+  background-repeat: no-repeat;
 }
 
 .game-container .grid .grid-item.weapon-attack {
-  background: url(../img/weapon-attack.png);
+  background: url(../img/weapon-attack-1.png), #fff;
+  background-size: contain;
+  background-repeat: no-repeat;
+}
+
+.game-container .grid .grid-item.weapon-attack-super {
+  background: url(../img/weapon-attack-super.png), #fff;
   background-size: contain;
   background-repeat: no-repeat;
 }
 
 .game-container .grid .grid-item.weapon-defense {
-  background: url(../img/weapon-defense.png);
+  background: url(../img/weapon-defense-1.png), #fff;
+  background-size: contain;
+  background-repeat: no-repeat;
+}
+
+.game-container .grid .grid-item.weapon-health {
+  background: url(../img/weapon-health.png), #fff;
   background-size: contain;
   background-repeat: no-repeat;
 }
 
 .game-container .grid .grid-item.highlighted {
-  border: 2px inset #5d5d5d;
+  -webkit-box-shadow: inset 0px 0 10px 1px #e0e0e0;
+          box-shadow: inset 0px 0 10px 1px #e0e0e0;
   pointer-events: all;
 }
 
 .game-container .grid .grid-item.player-1, .game-container .grid .grid-item.player-2 {
   pointer-events: none;
-  border: none;
+  -webkit-box-shadow: none;
+          box-shadow: none;
 }
 
 .game-container .dashboard {
   width: 50%;
   padding: 10px;
   text-align: center;
-  background: #e0e0e0;
+  background: #fff;
+  border: 1px solid #cecece;
   -webkit-transition: all 300ms ease;
   transition: all 300ms ease;
   -webkit-box-sizing: border-box;
@@ -145,7 +176,7 @@
 }
 
 .game-container .dashboard.active-turn {
-  background: #a7a7a7;
+  background: #dedede;
 }
 
 @media (min-width: 850px) {
@@ -181,13 +212,29 @@
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
-  width: 80%;
+  -ms-flex-wrap: wrap;
+      flex-wrap: wrap;
+  width: 100%;
+  max-width: 600px;
   background: #eee;
+}
+
+.combat-mode .inner h2 {
+  width: 100%;
+  font-size: 2.5rem;
+  padding: 1rem;
+  background: #f5f5f5;
+}
+
+.combat-mode .inner h2 span {
+  color: #ff0000;
 }
 
 .combat-mode .inner .player {
   width: 50%;
   padding: 2%;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
 }
 
 .combat-mode .inner .player .player-name {
@@ -209,24 +256,12 @@
   width: 50%;
 }
 
-.combat-mode .inner .player .actions .attack, .combat-mode .inner .player .actions .defense {
-  display: inline-block;
-  width: 100px;
-  height: 30px;
-  line-height: 30px;
-  border: 0;
-  background: none;
-  cursor: pointer;
+.combat-mode .inner .player.active-turn {
+  background: #dedede;
 }
 
-.combat-mode .inner .player .actions .attack {
-  background: #000;
-  color: #fff;
-}
-
-.combat-mode .inner .player .actions .defense {
-  background: #fff;
-  color: #000;
+.combat-mode .actions {
+  width: 100%;
 }
 
 .combat-mode.visible {

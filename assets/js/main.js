@@ -267,8 +267,6 @@ class Engine {
         this.highlightAvailableCells();
 
         // Players Stats Elements
-        document.querySelector('#player_1_dashboard .player-name').innerHTML = PLAYERS[0].name;
-        document.querySelector('#player_2_dashboard .player-name').innerHTML = PLAYERS[1].name;
         this.player_1_health = document.querySelector('#player_1_dashboard #health');
         this.player_1_attack = document.querySelector('#player_1_dashboard #attack');
         this.player_1_shield = document.querySelector('#player_1_dashboard #shield');
@@ -278,8 +276,6 @@ class Engine {
         this.updateStats();
 
         // Combat Mode Players Stats
-        document.querySelector('#combat_player_1_dashboard .player-name').innerHTML = PLAYERS[0].name;
-        document.querySelector('#combat_player_2_dashboard .player-name').innerHTML = PLAYERS[1].name;
         this.combat_player_1_health = document.querySelector('#combat_player_1_dashboard #health');
         this.combat_player_1_attack = document.querySelector('#combat_player_1_dashboard #attack');
         this.combat_player_1_shield = document.querySelector('#combat_player_1_dashboard #shield');
