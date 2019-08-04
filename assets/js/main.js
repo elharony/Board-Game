@@ -536,30 +536,38 @@ class Engine {
         combatModeModal.classList.add('visible');
 
         this.updateCombatStats();
-
-        console.log(`Current Player: ${this.playerTurn}`);
-        console.log(`Current Player Stats: ${PLAYERS[this.playerTurn].health}`);
-
-        // Let current player turn ATTACK the other
-        let currentPlayer = this.playerTurn;
-        let nextPlayer = (currentPlayer == 1) ? 0 : 1;
-
-        console.log(`Current Player: ${currentPlayer}`);
-        console.log(`Next Player: ${nextPlayer}`);
         
         var myTimer = setInterval(() => {
-            PLAYERS[currentPlayer].health -= PLAYERS[nextPlayer].attack;
-            this.updateCombatStats();
+            
+            // Let current player turn ATTACK the other
+            let currentPlayer = this.playerTurn;
+            let nextPlayer = (currentPlayer == 1) ? 0 : 1;
 
-            if(PLAYERS[currentPlayer].health == 0) {
-                clearInterval(myTimer);
+            
+            this.attack(currentPlayer, nextPlayer, myTimer);
+
+            // Switch player turn
+            setTimeout(() => {
+                this.playerTurn = (this.playerTurn == 0) ? 1 : 0;
+            }, 500)
+
+        }, 2000)
+
+        
+    }
+
+    attack(currentPlayer, nextPlayer, timer) {
+        PLAYERS[currentPlayer].health -= PLAYERS[nextPlayer].attack;
+        this.updateCombatStats();
+
+        if(PLAYERS[currentPlayer].health <= 0) {
+            setTimeout(() => {
+                clearInterval(timer);
                 this.announceTheWinner(PLAYERS[nextPlayer].name);
-            }
-
-        }, 1000)
-
-        // Switch player turn
-        // this.playerTurn = (this.playerTurn == 0) ? 1 : 0;
+            }, 250)
+        } else {
+            this.checkTurn();
+        }
     }
 
     announceTheWinner(winner) {
@@ -608,7 +616,7 @@ function getRandomInt(min, max) {
 function init() {
 
     const DISABLED_CELLS = 10;
-    const WEAPONS_COUNT = 3;
+    const WEAPONS_COUNT = 10;
     const WEAPONS = [
         {
             'type': 'defense',
