@@ -67,12 +67,12 @@
         }
 
         .grid-item.player-1 {
-            background: url(../img/police-1.png), #fff;
+            background: url(../img/police.png), #fff;
             background-size: contain;
             background-repeat: no-repeat;
         }
         .grid-item.player-2 {
-            background: url(../img/thief-1.png), #fff;
+            background: url(../img/thief.png), #fff;
             background-size: contain;
             background-repeat: no-repeat;
         }
@@ -86,8 +86,18 @@
             background-size: contain;
             background-repeat: no-repeat;
         }
+        .grid-item.weapon-attack-super {
+            background: url(../img/weapon-attack-super.png), #fff;
+            background-size: contain;
+            background-repeat: no-repeat;
+        }
         .grid-item.weapon-defense {
             background: url(../img/weapon-defense-1.png), #fff;
+            background-size: contain;
+            background-repeat: no-repeat;
+        }
+        .grid-item.weapon-health {
+            background: url(../img/weapon-health.png), #fff;
             background-size: contain;
             background-repeat: no-repeat;
         }

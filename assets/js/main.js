@@ -364,6 +364,14 @@ class Engine {
             landedCell.classList.remove('weapon-defense');
             PLAYERS[currentPlayer].shield += 10;
             this.updateStats();
+        } else if(landedCell.classList.contains('weapon-health')) {
+            landedCell.classList.remove('weapon-health');
+            PLAYERS[currentPlayer].health += 10;
+            this.updateStats();
+        } else if(landedCell.classList.contains('weapon-attack-super')) {
+            landedCell.classList.remove('weapon-attack-super');
+            PLAYERS[currentPlayer].attack += 20;
+            this.updateStats();
         }
     }
 
@@ -656,6 +664,14 @@ function init() {
         {
             'type': 'attack',
             'className': 'weapon-attack'
+        },
+        {
+            'type': 'health',
+            'className': 'weapon-health'
+        },
+        {
+            'type': 'attack',
+            'className': 'weapon-attack-super'
         }
     ]
 
@@ -680,6 +696,8 @@ function init() {
     for(let i = 0; i < WEAPONS_COUNT; i++) {
         const weapon1 = new Weapon(WEAPONS[0]);
         const weapon2 = new Weapon(WEAPONS[1]);
+        const weapon3 = new Weapon(WEAPONS[2]);
+        const weapon4 = new Weapon(WEAPONS[3]);
     }
 
     // Engine
