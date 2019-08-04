@@ -67,50 +67,37 @@
         }
 
         .grid-item.player-1 {
-            background: url(../img/police.png);
+            background: url(../img/police-1.png), #fff;
             background-size: contain;
             background-repeat: no-repeat;
         }
         .grid-item.player-2 {
-            background: url(../img/thief.png);
+            background: url(../img/thief-1.png), #fff;
             background-size: contain;
             background-repeat: no-repeat;
         }
         .grid-item.disabled {
-            background: #5d5d5d;
-            &:hover {
-                background: #5d5d5d;
-            }
+            background: url(../img/dimmed-cell.png), #fff;
+            background-size: contain;
+            background-repeat: no-repeat;
         }
         .grid-item.weapon-attack {
-            background: url(../img/weapon-attack.png);
+            background: url(../img/weapon-attack-1.png), #fff;
             background-size: contain;
             background-repeat: no-repeat;
         }
         .grid-item.weapon-defense {
-            background: url(../img/weapon-defense.png);
+            background: url(../img/weapon-defense-1.png), #fff;
             background-size: contain;
             background-repeat: no-repeat;
         }
         .grid-item.highlighted {
-            position: relative;
-
-            &:before {
-                content: '';
-                position: absolute;
-                left: 20px;
-                top: 20px;
-                width: 5px;
-                height: 5px;
-                border-radius: 50%;
-                background: #5d5d5d;
-            }
-            border: 2px inset transparent;
+            box-shadow: inset 0px 0 10px 1px #e0e0e0;
             pointer-events: all;
         }
         .grid-item.player-1, .grid-item.player-2 {
             pointer-events: none;
-            border: none;
+            box-shadow: none;
         }
     }
 
