@@ -7,6 +7,7 @@
 .btn {
     display: inline-block;
     min-width: 100px;
+    margin: 10px auto;
     padding: 5px 10px;
     background: none;
     background: #000;
@@ -159,7 +160,19 @@
         display: flex;
         flex-wrap: wrap;
         width: 100%;
+        max-width: 600px;
         background: #eee;
+
+        h2 {
+            width: 100%;
+            font-size: 2.5rem;
+            padding: 1rem;
+            background: #f5f5f5;
+
+            span {
+                color: #ff0000;
+            }
+        }
 
         .player {
             width: 50%;

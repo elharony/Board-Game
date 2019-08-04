@@ -580,8 +580,20 @@ class Engine {
     }
 
     announceTheWinner(winner) {
-        alert(`Aaaaand, the winner is: ${winner}`);
-        this.rematch();
+
+        // Show Victory Popup
+        let victoryPopup = document.querySelector('.combat-mode.victory');
+        victoryPopup.classList.add('visible');
+
+        // Add winner text
+        let winnerElem = document.querySelector('.combat-mode.victory .inner h2');
+        winnerElem.innerHTML = `The winner is: <span>${winner}!</span>`;
+
+        // Restart the game
+        let restartBtn = document.querySelector('.combat-mode.victory .inner .btn');
+        restartBtn.addEventListener('click', () => {
+            this.rematch();
+        })        
     }
 
     rematch() {
@@ -601,6 +613,10 @@ class Engine {
         // Hide Combat Mode
         let combatModeModal = document.querySelector('.combat-mode');
         combatModeModal.classList.remove('visible');
+
+        // Hide Winner Popup
+        let victoryPopup = document.querySelector('.combat-mode.victory');
+        victoryPopup.classList.remove('visible');
 
         // Delete current grid
         let grid = document.querySelector('.grid');
