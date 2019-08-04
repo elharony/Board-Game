@@ -543,29 +543,38 @@ class Engine {
             let currentPlayer = this.playerTurn;
             let nextPlayer = (currentPlayer == 1) ? 0 : 1;
 
-            
-            this.attack(currentPlayer, nextPlayer, myTimer);
+            // Start fighting!
+            this.fight(currentPlayer, nextPlayer, myTimer);
 
             // Switch player turn
             setTimeout(() => {
                 this.playerTurn = (this.playerTurn == 0) ? 1 : 0;
             }, 500)
 
-        }, 2000)
-
-        
+        }, 1000)        
     }
 
-    attack(currentPlayer, nextPlayer, timer) {
+    fight(currentPlayer, nextPlayer, timer) {
         PLAYERS[currentPlayer].health -= PLAYERS[nextPlayer].attack;
         this.updateCombatStats();
 
         if(PLAYERS[currentPlayer].health <= 0) {
+
+            // Set `health` to `0`, and avoid negative values
+            if(currentPlayer == 0) {
+                this.combat_player_1_health.innerHTML = 0;
+            } else {
+                this.combat_player_2_health.innerHTML = 0;
+            }
+            
+            // Announce the winner
             setTimeout(() => {
                 clearInterval(timer);
                 this.announceTheWinner(PLAYERS[nextPlayer].name);
             }, 250)
+
         } else {
+
             this.checkTurn();
         }
     }
@@ -616,7 +625,7 @@ function getRandomInt(min, max) {
 function init() {
 
     const DISABLED_CELLS = 10;
-    const WEAPONS_COUNT = 10;
+    const WEAPONS_COUNT = 3;
     const WEAPONS = [
         {
             'type': 'defense',
