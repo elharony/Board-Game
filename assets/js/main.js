@@ -588,6 +588,12 @@ class Engine {
         // damage =  Opponent Attack - (Current Player Shield / 100 * Opponent Attack)
         let damage = PLAYERS[nextPlayer].attack - (PLAYERS[currentPlayer].shield / 100 * PLAYERS[nextPlayer].attack);
         PLAYERS[currentPlayer].health -= damage;
+
+        // Animate stats
+        window['combat_player_' + (currentPlayer+1) + '_health'].classList.add('updateStats');
+        setTimeout(() => {
+            window['combat_player_' + (currentPlayer+1) + '_health'].classList.remove('updateStats');
+        }, 500)
         
         // Update stats
         this.updateCombatStats();
