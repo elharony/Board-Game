@@ -548,16 +548,27 @@ class Engine {
         /**
          * Is the `currentPlayer` closer to `opponentPlayer`?
          */
-        if(
-            (topCell.classList.contains(opponentPlayer) ||
-            bottomCell.classList.contains(opponentPlayer) ||
-            rightCell.classList.contains(opponentPlayer) ||
-            leftCell.classList.contains(opponentPlayer))
-        ) {
-            return true;
-        } else {
-            return false;
+        if(!(row == 0)) {
+            if((topCell.classList.contains(opponentPlayer))) {
+                return true;
+            }
         }
+        if(!(row == 9)) {
+            if((bottomCell.classList.contains(opponentPlayer))) {
+                return true;
+            }
+        }
+        if(!(col == 0)) {
+            if((leftCell.classList.contains(opponentPlayer))) {
+                return true;
+            }
+        }
+        if(!(col == 9)) {
+            if((rightCell.classList.contains(opponentPlayer))) {
+                return true;
+            }
+        }
+        return false;
     }
 
     startCompatMode() {
