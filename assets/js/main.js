@@ -713,10 +713,8 @@ function init() {
         }
     ]
 
-
     // Grid
     new Grid(document.querySelector('.grid'), 10);
-
 
     // Dimmed Cells
     const dimmedCells = new DimmedCell();
@@ -724,23 +722,20 @@ function init() {
         dimmedCells.dimCell();
     }
 
-
     // Players
-    const player1 = new Player(PLAYERS[0]);
-    const player2 = new Player(PLAYERS[1]);
-
+    new Player(PLAYERS[0]);
+    new Player(PLAYERS[1]);
 
     // Weapons
     for(let i = 0; i < WEAPONS_COUNT; i++) {
-        const weapon1 = new Weapon(WEAPONS[0]);
-        const weapon2 = new Weapon(WEAPONS[1]);
-        const weapon3 = new Weapon(WEAPONS[2]);
-        const weapon4 = new Weapon(WEAPONS[3]);
+        new Weapon(WEAPONS[0]);
+        new Weapon(WEAPONS[1]);
+        new Weapon(WEAPONS[2]);
+        new Weapon(WEAPONS[3]);
     }
 
     // Engine
     new Engine();
-
 }
 
 init();
