@@ -33,6 +33,22 @@ let PLAYERS = [
     }
 ]
 
+// Players Stats Elements
+var player_1_health = document.querySelector('#player_1_dashboard #health');
+var player_1_attack = document.querySelector('#player_1_dashboard #attack');
+var player_1_shield = document.querySelector('#player_1_dashboard #shield');
+var player_2_health = document.querySelector('#player_2_dashboard #health');
+var player_2_attack = document.querySelector('#player_2_dashboard #attack');
+var player_2_shield = document.querySelector('#player_2_dashboard #shield');
+
+// Combat Mode Players Stats
+var combat_player_1_health = document.querySelector('#combat_player_1_dashboard #health');
+var combat_player_1_attack = document.querySelector('#combat_player_1_dashboard #attack');
+var combat_player_1_shield = document.querySelector('#combat_player_1_dashboard #shield');
+var combat_player_2_health = document.querySelector('#combat_player_2_dashboard #health');
+var combat_player_2_attack = document.querySelector('#combat_player_2_dashboard #attack');
+var combat_player_2_shield = document.querySelector('#combat_player_2_dashboard #shield');
+
 
 /**
  * Grid
@@ -263,25 +279,9 @@ class Engine {
     constructor() {
         this.playerTurn = 0;
         this.MAX_HIGHLIGHTED_CELLS = 2;
+        this.updateStats();
         this.controller();
         this.highlightAvailableCells();
-
-        // Players Stats Elements
-        this.player_1_health = document.querySelector('#player_1_dashboard #health');
-        this.player_1_attack = document.querySelector('#player_1_dashboard #attack');
-        this.player_1_shield = document.querySelector('#player_1_dashboard #shield');
-        this.player_2_health = document.querySelector('#player_2_dashboard #health');
-        this.player_2_attack = document.querySelector('#player_2_dashboard #attack');
-        this.player_2_shield = document.querySelector('#player_2_dashboard #shield');
-        this.updateStats();
-
-        // Combat Mode Players Stats
-        this.combat_player_1_health = document.querySelector('#combat_player_1_dashboard #health');
-        this.combat_player_1_attack = document.querySelector('#combat_player_1_dashboard #attack');
-        this.combat_player_1_shield = document.querySelector('#combat_player_1_dashboard #shield');
-        this.combat_player_2_health = document.querySelector('#combat_player_2_dashboard #health');
-        this.combat_player_2_attack = document.querySelector('#combat_player_2_dashboard #attack');
-        this.combat_player_2_shield = document.querySelector('#combat_player_2_dashboard #shield');
     }
     
     /**
@@ -346,6 +346,7 @@ class Engine {
      * Check if the `landedCell` has a weapon or not
      * If yes, remove that weapon
      * Increase/Decrease stats based on the weapon
+     * Animate the stats
      * Call `updateStats` to update stats change
      * 
      * @param {*} currentPlayer 
@@ -353,20 +354,44 @@ class Engine {
      */
     takeWeapon(currentPlayer, landedCell) {
         if(landedCell.classList.contains('weapon-attack')) {
+
+            // Remove weapon icon
             landedCell.classList.remove('weapon-attack');
+
+            // Increase player stats
             PLAYERS[currentPlayer].attack += 10;
+
+            // Animate Stats
+            window['player_' + (currentPlayer+1) + '_attack'].classList.add('updateStats');
+            setTimeout(() => {
+                window['player_' + (currentPlayer+1) + '_attack'].classList.remove('updateStats');
+            }, 500)
+
+            // Update stats
             this.updateStats();
         } else if(landedCell.classList.contains('weapon-defense')) {
             landedCell.classList.remove('weapon-defense');
             PLAYERS[currentPlayer].shield += 10;
+            window['player_' + (currentPlayer+1) + '_shield'].classList.add('updateStats');
+            setTimeout(() => {
+                window['player_' + (currentPlayer+1) + '_shield'].classList.remove('updateStats');
+            }, 500)
             this.updateStats();
         } else if(landedCell.classList.contains('weapon-health')) {
             landedCell.classList.remove('weapon-health');
             PLAYERS[currentPlayer].health += 10;
+            window['player_' + (currentPlayer+1) + '_health'].classList.add('updateStats');
+            setTimeout(() => {
+                window['player_' + (currentPlayer+1) + '_health'].classList.remove('updateStats');
+            }, 500)
             this.updateStats();
         } else if(landedCell.classList.contains('weapon-attack-super')) {
             landedCell.classList.remove('weapon-attack-super');
             PLAYERS[currentPlayer].attack += 20;
+            window['player_' + (currentPlayer+1) + '_attack'].classList.add('updateStats');
+            setTimeout(() => {
+                window['player_' + (currentPlayer+1) + '_attack'].classList.remove('updateStats');
+            }, 500)
             this.updateStats();
         }
     }
@@ -375,21 +400,21 @@ class Engine {
      * Update stats after hitting a weapon
      */
     updateStats() {
-        this.player_1_health.innerHTML = PLAYERS[0].health;
-        this.player_1_attack.innerHTML = PLAYERS[0].attack;
-        this.player_1_shield.innerHTML = PLAYERS[0].shield;
-        this.player_2_health.innerHTML = PLAYERS[1].health;
-        this.player_2_attack.innerHTML = PLAYERS[1].attack;
-        this.player_2_shield.innerHTML = PLAYERS[1].shield;
+        player_1_health.innerHTML = PLAYERS[0].health;
+        player_1_attack.innerHTML = PLAYERS[0].attack;
+        player_1_shield.innerHTML = PLAYERS[0].shield;
+        player_2_health.innerHTML = PLAYERS[1].health;
+        player_2_attack.innerHTML = PLAYERS[1].attack;
+        player_2_shield.innerHTML = PLAYERS[1].shield;
     }
 
     updateCombatStats() {
-        this.combat_player_1_health.innerHTML = PLAYERS[0].health;
-        this.combat_player_1_attack.innerHTML = PLAYERS[0].attack;
-        this.combat_player_1_shield.innerHTML = PLAYERS[0].shield;
-        this.combat_player_2_health.innerHTML = PLAYERS[1].health;
-        this.combat_player_2_attack.innerHTML = PLAYERS[1].attack;
-        this.combat_player_2_shield.innerHTML = PLAYERS[1].shield;
+        combat_player_1_health.innerHTML = PLAYERS[0].health;
+        combat_player_1_attack.innerHTML = PLAYERS[0].attack;
+        combat_player_1_shield.innerHTML = PLAYERS[0].shield;
+        combat_player_2_health.innerHTML = PLAYERS[1].health;
+        combat_player_2_attack.innerHTML = PLAYERS[1].attack;
+        combat_player_2_shield.innerHTML = PLAYERS[1].shield;
     }
 
     checkTurn() {
@@ -572,9 +597,9 @@ class Engine {
 
             // Set `health` to `0`, and avoid negative values
             if(currentPlayer == 0) {
-                this.combat_player_1_health.innerHTML = 0;
+                combat_player_1_health.innerHTML = 0;
             } else {
-                this.combat_player_2_health.innerHTML = 0;
+                combat_player_2_health.innerHTML = 0;
             }
             
             // Announce the winner
