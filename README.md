@@ -2,7 +2,7 @@
 2-players Vanilla JS Game, where `Police` is trying to get the most weapons to bust the `Thief`, and vise-versa. Play it with a friend, or - if you're bored - play alone and bet on yourself! 😅
 
 ## The Game
-It's very simple, all you have to do is collecting weapons and then get closer to the other player to start the `Combat Mode` and the winner will be announced.
+[Play it now!](https://elharony.github.io/Thief-Busted/) It's very simple, all you have to do is collecting weapons and then get closer to the other player to start the `Combat Mode` and the winner will be announced.
 
 ![Thief-Busted-Game--Yahya-Elharony](https://user-images.githubusercontent.com/16986422/62785301-ab2f4600-bac0-11e9-877c-73c49d4727b4.gif)
 
