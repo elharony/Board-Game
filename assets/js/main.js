@@ -1,14 +1,19 @@
 /**
+ * === Program Flow ===
  * 1. Draw the grid
  * 2. Place `dimmed` cells
  * 3. Place `weapons`
  * 4. Place 2 `players`
+ * 5. Move the players around within the `highlighted` & `available` cells
+ * 6. Take `weapons`, and update stats
+ * 7. When players get closer, start the `Combat Mode`!
  */
 
-let availableCells = [];
-let unavailableCells = [];
 
-let PLAYERS = [
+/**
+ * Data Storage
+ */
+const PLAYERS = [
     {
         'name': 'Police',
         'className': 'player-1',
@@ -32,8 +37,34 @@ let PLAYERS = [
         'shield': 10
     }
 ]
+const DISABLED_CELLS = 15;
+const WEAPONS_COUNT = 4;
+const WEAPONS = [
+    {
+        'type': 'defense',
+        'className': 'weapon-defense'
+    },
+    {
+        'type': 'attack',
+        'className': 'weapon-attack'
+    },
+    {
+        'type': 'health',
+        'className': 'weapon-health'
+    },
+    {
+        'type': 'attack',
+        'className': 'weapon-attack-super'
+    }
+]
 
-// Players Stats Elements
+let availableCells = [];
+let unavailableCells = [];
+
+
+/**
+ * `Game` Players Stats
+ */ 
 var player_1_health = document.querySelector('#player_1_dashboard #health');
 var player_1_attack = document.querySelector('#player_1_dashboard #attack');
 var player_1_shield = document.querySelector('#player_1_dashboard #shield');
@@ -41,7 +72,9 @@ var player_2_health = document.querySelector('#player_2_dashboard #health');
 var player_2_attack = document.querySelector('#player_2_dashboard #attack');
 var player_2_shield = document.querySelector('#player_2_dashboard #shield');
 
-// Combat Mode Players Stats
+/**
+ * `Combat Mode` Players Stats
+ */ 
 var combat_player_1_health = document.querySelector('#combat_player_1_dashboard #health');
 var combat_player_1_attack = document.querySelector('#combat_player_1_dashboard #attack');
 var combat_player_1_shield = document.querySelector('#combat_player_1_dashboard #shield');
@@ -86,16 +119,18 @@ class Item {
         this.row = row;
         this.col = col;
         this.itemClassName = itemClassName;
-        this.avoidItems = ['weapon-attack', 'weapon-defense', 'player-1', 'player-2'];
-
+        this.avoidItems = ['weapon-attack', 'weapon-attack-super', 'weapon-defense', 'weapon-health', 'player-1', 'player-2'];
     }
 
     /**
-    * Nearby Cells 
-    */
+     * Check if there are no nearby *avoidItems* to the given cell.
+     * 
+     * @param {*} row 
+     * @param {*} col 
+     * 
+     * @returns {boolean} `true` If there are no nearby *avoidItems*. `false` If there are one or more nearby *avoidItems*. 
+     */
     checkNearby(row, col) {
-
-        /* Check nearby cells */
 
         /**
         * Example: (5, 6)
@@ -108,61 +143,54 @@ class Item {
         let bottomCell = document.querySelector(`.cell_${row + 1}_${col}`);
         let rightCell = document.querySelector(`.cell_${row}_${col + 1}`);
         let leftCell = document.querySelector(`.cell_${row}_${col - 1}`);
-
-        // console.log(`
-        //     Current item: ${row}, ${col}.
-        //     Top: ${row - 1}, ${col}
-        //     Right: ${row}, ${col + 1}
-        //     Bottom: ${row + 1}, ${col}
-        //     Left: ${row}, ${col - 1}
-        //     \n
-        // `)
         
-        // Check for nearby items
-
-        if(
-            !(topCell.classList.contains(this.avoidItems[0]) ||
-            bottomCell.classList.contains(this.avoidItems[0]) ||
-            rightCell.classList.contains(this.avoidItems[0]) ||
-            leftCell.classList.contains(this.avoidItems[0]))
-        ) {
-            
-            if(!(topCell.classList.contains(this.avoidItems[1]) ||
-            bottomCell.classList.contains(this.avoidItems[1]) ||
-            rightCell.classList.contains(this.avoidItems[1]) ||
-            leftCell.classList.contains(this.avoidItems[1]))) {
-
-                if(!(topCell.classList.contains(this.avoidItems[2]) ||
-                bottomCell.classList.contains(this.avoidItems[2]) ||
-                rightCell.classList.contains(this.avoidItems[2]) ||
-                leftCell.classList.contains(this.avoidItems[2]))) {
-
-                    if(!(topCell.classList.contains(this.avoidItems[3]) ||
-                    bottomCell.classList.contains(this.avoidItems[3]) ||
-                    rightCell.classList.contains(this.avoidItems[3]) ||
-                    leftCell.classList.contains(this.avoidItems[3]))) {
-
-                        return true;
-
-                    } else {
-                        return false;
+        if(this.isCloserTo(topCell, bottomCell, rightCell, leftCell, this.avoidItems[0])) {
+            if(this.isCloserTo(topCell, bottomCell, rightCell, leftCell, this.avoidItems[1])) {
+                if(this.isCloserTo(topCell, bottomCell, rightCell, leftCell, this.avoidItems[2])) {
+                    if(this.isCloserTo(topCell, bottomCell, rightCell, leftCell, this.avoidItems[3])) {
+                        if(this.isCloserTo(topCell, bottomCell, rightCell, leftCell, this.avoidItems[4])) {
+                            if(this.isCloserTo(topCell, bottomCell, rightCell, leftCell, this.avoidItems[5])) {
+                                return true;
+                            }
+                        }
                     }
-
-                } else {
-                    return false;
                 }
-
-            } else {
-                return false;
             }
-            
+        }
+        return false;
+    }
+
+    /**
+     * Used for *checkNearby()* to check if given *cells* are closer to the given *item*
+     * 
+     * @param {*} topCell 
+     * @param {*} bottomCell 
+     * @param {*} rightCell 
+     * @param {*} leftCell 
+     * @param {*} item 
+     * 
+     * @returns {boolean} `true` If there's a closer `item`. `false` If there isn't.
+     */
+    isCloserTo(topCell, bottomCell, rightCell, leftCell, item) {
+        if(
+            !(topCell.classList.contains(item) ||
+            bottomCell.classList.contains(item) ||
+            rightCell.classList.contains(item) ||
+            leftCell.classList.contains(item))
+        ) {
+            return true;
         } else {
             return false;
         }
     }
 
     /**
-     * isAvailableCell?
+     * Check whether a given cell is available or not
+     * 
+     * @param {*} row 
+     * @param {*} col 
+     * 
+     * @returns {boolean} `true` If it's available.
      */
     isAvailableCell(row, col) {
         let result = !(unavailableCells.includes(`cell_${row}_${col}`)); // `!` To get "Not Available"
@@ -170,7 +198,14 @@ class Item {
     }
 
     /**
-     * Place Item
+     * Put a specific item on the grid, based on its *row*, *col* 
+     * and the *itemClassName* specifies which item it represents
+     * 
+     * @param {*} row 
+     * @param {*} col 
+     * @param {*} itemClassName 
+     * 
+     * @returns null
      */
     placeItem(row, col, itemClassName) {
 
@@ -300,7 +335,6 @@ class Engine {
      * 
      */
     controller() {
-        // const HIGHLIGHTED_CELLS = document.getElementsByClassName('.highlighted');
         const gridItems = document.querySelectorAll('.grid-item');
 
         /**
@@ -417,12 +451,12 @@ class Engine {
         combat_player_2_shield.innerHTML = PLAYERS[1].shield;
     }
 
+    /**
+     * Reset Active Turn
+     * Add `active-turn` class to the current player's turn
+     * Return the current player, to be used at the `controller` method
+     */
     checkTurn() {
-        /**
-         * Reset Active Turn
-         * Add `active-turn` class to the current player's turn
-         * Return the current player, to be used at the `controller` method
-         */
         this.resetTurn();
 
         if(this.playerTurn == 0) {
@@ -644,38 +678,12 @@ class Engine {
         // Restart the game
         let restartBtn = document.querySelector('.combat-mode.victory .inner .btn');
         restartBtn.addEventListener('click', () => {
-            this.rematch();
+            this.restart();
         })        
     }
 
-    rematch() {
-
-        // Reset Player Stats
-        PLAYERS[0].health = 100;
-        PLAYERS[0].attack = 10;
-        PLAYERS[0].shield = 10;
-        PLAYERS[1].health = 100;
-        PLAYERS[1].attack = 10;
-        PLAYERS[1].shield = 10;
-        this.updateStats();
-        
-        // Reset Player Turn
-        this.playerTurn = 0;
-
-        // Hide Combat Mode
-        let combatModeModal = document.querySelector('.combat-mode');
-        combatModeModal.classList.remove('visible');
-
-        // Hide Winner Popup
-        let victoryPopup = document.querySelector('.combat-mode.victory');
-        victoryPopup.classList.remove('visible');
-
-        // Delete current grid
-        let grid = document.querySelector('.grid');
-        grid.innerHTML = '';
-
-        // Restart the game!
-        init();
+    restart() {
+        location.reload();
     }
 }
 
@@ -691,27 +699,6 @@ function getRandomInt(min, max) {
  * Init
  */
 function init() {
-
-    const DISABLED_CELLS = 10;
-    const WEAPONS_COUNT = 4;
-    const WEAPONS = [
-        {
-            'type': 'defense',
-            'className': 'weapon-defense'
-        },
-        {
-            'type': 'attack',
-            'className': 'weapon-attack'
-        },
-        {
-            'type': 'health',
-            'className': 'weapon-health'
-        },
-        {
-            'type': 'attack',
-            'className': 'weapon-attack-super'
-        }
-    ]
 
     // Grid
     new Grid(document.querySelector('.grid'), 10);
