@@ -63,6 +63,13 @@ body {
           animation: updateStats 250ms linear infinite;
 }
 
+h1 {
+  font-size: 2rem;
+  padding: 0.5rem;
+  background: #fff;
+  text-align: center;
+}
+
 .game-container {
   display: -webkit-box;
   display: -ms-flexbox;
@@ -82,7 +89,7 @@ body {
   .game-container {
     -ms-flex-wrap: nowrap;
         flex-wrap: nowrap;
-    height: 100vh;
+    height: 90vh;
   }
 }
 
