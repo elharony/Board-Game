@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,65 +10,124 @@
     <!-- CSS & Fonts -->
     <link rel="stylesheet" href="assets/css/main.css">
     <link href="https://fonts.googleapis.com/css?family=Sintony" rel="stylesheet">
-    
+
 <body>
 
-    <h1>Thief Busted</h1>
-    <main class="game-container">
-        <div class="dashboard active-turn" id="player_1_dashboard">
-            <h2 class="player-name"><img src="./assets/img/police.png" alt="Police" title="Police"></h2>
-            <ul class="stats">
-                <li>Health: <span id="health"></span> </li>
-                <li>Attack: <span id="attack"></span> </li>
-                <li>Shield: <span id="shield"></span> </li>
-            </ul>
-        </div>
-        <div class="dashboard" id="player_2_dashboard">
-            <h2 class="player-name"><img src="./assets/img/thief.png" alt="Thief" title="Thief"></h2>
-            <ul class="stats">
-                <li>Health: <span id="health"></span> </li>
-                <li>Attack: <span id="attack"></span> </li>
-                <li>Shield: <span id="shield"></span> </li>
-            </ul>
-        </div>
-        <div class="grid"></div>
-    </main>
-    <div class="combat-mode">
-        <div class="inner">
-            <h2>The fight begins... 🔥</h2>
-            <div class="player" id="combat_player_1_dashboard">
-                <h3 class="player-name"><img src="./assets/img/police.png" alt="Police" title="Police"></h3>
+    <div id="game1">
+        <h1>Thief Busted 1</h1>
+        <main class="game-container">
+            <div class="dashboard active-turn" id="player_1_dashboard">
+                <h2 class="player-name"><img src="./assets/img/police.png" alt="Police" title="Police"></h2>
                 <ul class="stats">
-                    <li>Health:</li>
-                    <li id="health"></li>
-                    <li>Attack:</li>
-                    <li id="attack"></li>
-                    <li>Shield:</li>
-                    <li id="shield"></li>
+                    <li>Health: <span id="health"></span> </li>
+                    <li>Attack: <span id="attack"></span> </li>
+                    <li>Shield: <span id="shield"></span> </li>
                 </ul>
             </div>
-            <div class="player" id="combat_player_2_dashboard">
-                <h3 class="player-name"><img src="./assets/img/thief.png" alt="Thief" title="Thief"></h3>
+            <div class="dashboard" id="player_2_dashboard">
+                <h2 class="player-name"><img src="./assets/img/thief.png" alt="Thief" title="Thief"></h2>
                 <ul class="stats">
-                    <li>Health:</li>
-                    <li id="health"></li>
-                    <li>Attack:</li>
-                    <li id="attack"></li>
-                    <li>Shield:</li>
-                    <li id="shield"></li>
+                    <li>Health: <span id="health"></span> </li>
+                    <li>Attack: <span id="attack"></span> </li>
+                    <li>Shield: <span id="shield"></span> </li>
                 </ul>
+            </div>
+            <div class="grid"></div>
+        </main>
+        <div class="combat-mode">
+            <div class="inner">
+                <h2>The fight begins... 🔥</h2>
+                <div class="player" id="combat_player_1_dashboard">
+                    <h3 class="player-name"><img src="./assets/img/police.png" alt="Police" title="Police"></h3>
+                    <ul class="stats">
+                        <li>Health:</li>
+                        <li id="health"></li>
+                        <li>Attack:</li>
+                        <li id="attack"></li>
+                        <li>Shield:</li>
+                        <li id="shield"></li>
+                    </ul>
+                </div>
+                <div class="player" id="combat_player_2_dashboard">
+                    <h3 class="player-name"><img src="./assets/img/thief.png" alt="Thief" title="Thief"></h3>
+                    <ul class="stats">
+                        <li>Health:</li>
+                        <li id="health"></li>
+                        <li>Attack:</li>
+                        <li id="attack"></li>
+                        <li>Shield:</li>
+                        <li id="shield"></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="combat-mode victory">
+            <div class="inner">
+                <h2></h2>
+                <button class="btn">Restart</button>
             </div>
         </div>
     </div>
 
-    <div class="combat-mode victory">
-        <div class="inner">
-            <h2></h2>
-            <button class="btn">Restart</button>
+    <div id="game2">
+            <h1>Thief Busted 2</h1>
+            <main class="game-container">
+                <div class="dashboard active-turn" id="player_1_dashboard">
+                    <h2 class="player-name"><img src="./assets/img/police.png" alt="Police" title="Police"></h2>
+                    <ul class="stats">
+                        <li>Health: <span id="health"></span> </li>
+                        <li>Attack: <span id="attack"></span> </li>
+                        <li>Shield: <span id="shield"></span> </li>
+                    </ul>
+                </div>
+                <div class="dashboard" id="player_2_dashboard">
+                    <h2 class="player-name"><img src="./assets/img/thief.png" alt="Thief" title="Thief"></h2>
+                    <ul class="stats">
+                        <li>Health: <span id="health"></span> </li>
+                        <li>Attack: <span id="attack"></span> </li>
+                        <li>Shield: <span id="shield"></span> </li>
+                    </ul>
+                </div>
+                <div class="grid"></div>
+            </main>
+            <div class="combat-mode">
+                <div class="inner">
+                    <h2>The fight begins... 🔥</h2>
+                    <div class="player" id="combat_player_1_dashboard">
+                        <h3 class="player-name"><img src="./assets/img/police.png" alt="Police" title="Police"></h3>
+                        <ul class="stats">
+                            <li>Health:</li>
+                            <li id="health"></li>
+                            <li>Attack:</li>
+                            <li id="attack"></li>
+                            <li>Shield:</li>
+                            <li id="shield"></li>
+                        </ul>
+                    </div>
+                    <div class="player" id="combat_player_2_dashboard">
+                        <h3 class="player-name"><img src="./assets/img/thief.png" alt="Thief" title="Thief"></h3>
+                        <ul class="stats">
+                            <li>Health:</li>
+                            <li id="health"></li>
+                            <li>Attack:</li>
+                            <li id="attack"></li>
+                            <li>Shield:</li>
+                            <li id="shield"></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+    
+            <div class="combat-mode victory">
+                <div class="inner">
+                    <h2></h2>
+                    <button class="btn">Restart</button>
+                </div>
+            </div>
         </div>
-    </div>
-
     <!-- Scripts -->
     <script src="assets/js/main.js"></script>
 </body>
+
 </html>
