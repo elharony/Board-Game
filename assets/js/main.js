@@ -71,10 +71,18 @@ class Item {
      *   [5, 5] [5, 6] [5, 7]
      *          [6, 6]
      */
-    let topCell = this.game.gameContainerElement.querySelector(`.cell_${row - 1}_${col}`);
-    let bottomCell = this.game.gameContainerElement.querySelector(`.cell_${row + 1}_${col}`);
-    let rightCell = this.game.gameContainerElement.querySelector(`.cell_${row}_${col + 1}`);
-    let leftCell = this.game.gameContainerElement.querySelector(`.cell_${row}_${col - 1}`);
+    let topCell = this.game.gameContainerElement.querySelector(
+      `.cell_${row - 1}_${col}`
+    );
+    let bottomCell = this.game.gameContainerElement.querySelector(
+      `.cell_${row + 1}_${col}`
+    );
+    let rightCell = this.game.gameContainerElement.querySelector(
+      `.cell_${row}_${col + 1}`
+    );
+    let leftCell = this.game.gameContainerElement.querySelector(
+      `.cell_${row}_${col - 1}`
+    );
 
     if (
       this.isCloserTo(
@@ -190,7 +198,9 @@ class Item {
    * @returns null
    */
   placeItem(row, col, itemClassName) {
-    let selectedCell = this.game.gameContainerElement.querySelector(`.cell_${row}_${col}`);
+    let selectedCell = this.game.gameContainerElement.querySelector(
+      `.cell_${row}_${col}`
+    );
     selectedCell.classList.add(itemClassName);
 
     // Make that cell unavailable for later use
@@ -305,7 +315,9 @@ class Engine {
    *
    */
   controller() {
-    const gridItems = this.game.gameContainerElement.querySelectorAll('.grid-item');
+    const gridItems = this.game.gameContainerElement.querySelectorAll(
+      '.grid-item'
+    );
 
     /**
      * Add `click` to each cell, and
@@ -318,32 +330,31 @@ class Engine {
      */
 
     for (let item of gridItems) {
-      item.addEventListener(
-        'click',
-        function() {
-          let player = this.checkTurn();
-          let playerElement = this.game.gameContainerElement.querySelector(`.${player}`);
-          playerElement.classList.remove(player);
-          item.classList.add(player);
+      item.addEventListener('click', () => {
+        let player = this.checkTurn();
+        let playerElement = this.game.gameContainerElement.querySelector(
+          `.${player}`
+        );
+        playerElement.classList.remove(player);
+        item.classList.add(player);
 
-          let playerRow = item.getAttribute('data-row');
-          let playerCol = item.getAttribute('data-col');
+        let playerRow = item.getAttribute('data-row');
+        let playerCol = item.getAttribute('data-col');
 
-          // Hit a weapon?
-          this.takeWeapon(this.playerTurn, item);
+        // Hit a weapon?
+        this.takeWeapon(this.playerTurn, item);
 
-          // Combat Mode?
-          if (this.isCombatMode(this.playerTurn, playerRow, playerCol)) {
-            this.startCompatMode();
-          }
+        // Combat Mode?
+        if (this.isCombatMode(this.playerTurn, playerRow, playerCol)) {
+          this.startCompatMode();
+        }
 
-          // Switch player turn
-          this.playerTurn = this.playerTurn == 0 ? 1 : 0;
+        // Switch player turn
+        this.playerTurn = this.playerTurn == 0 ? 1 : 0;
 
-          // Highlight Available Cells
-          this.highlightAvailableCells();
-        }.bind(this)
-      );
+        // Highlight Available Cells
+        this.highlightAvailableCells();
+      });
     }
   }
 
@@ -491,7 +502,9 @@ class Engine {
    * Remove `active-turn` class from the previous turn
    */
   resetTurn() {
-    let activeTurn = this.game.gameContainerElement.querySelectorAll('.active-turn');
+    let activeTurn = this.game.gameContainerElement.querySelectorAll(
+      '.active-turn'
+    );
 
     for (let i = 0; i < activeTurn.length; i++) {
       activeTurn[i].classList.remove('active-turn');
@@ -513,14 +526,18 @@ class Engine {
      * Highlight available cells for selected player in all directions (`Top`, `Right`, `Bottom`, `Left`)
      */
     let player = this.checkTurn();
-    let playerElement = this.game.gameContainerElement.querySelector(`.${player}`);
+    let playerElement = this.game.gameContainerElement.querySelector(
+      `.${player}`
+    );
 
     let row = parseInt(playerElement.getAttribute('data-row'));
     let col = parseInt(playerElement.getAttribute('data-col'));
 
     // Top
     for (let i = 1; i <= this.MAX_HIGHLIGHTED_CELLS; i++) {
-      let topCell = this.game.gameContainerElement.querySelector(`.cell_${row - i}_${col}`);
+      let topCell = this.game.gameContainerElement.querySelector(
+        `.cell_${row - i}_${col}`
+      );
 
       // Check if we are selecting an unavailable cell
       if (row - i < 0) {
@@ -534,7 +551,9 @@ class Engine {
 
     // Right
     for (let i = 1; i <= this.MAX_HIGHLIGHTED_CELLS; i++) {
-      let rightCell = this.game.gameContainerElement.querySelector(`.cell_${row}_${col + i}`);
+      let rightCell = this.game.gameContainerElement.querySelector(
+        `.cell_${row}_${col + i}`
+      );
 
       // Check if we are selecting an unavailable cell
       if (col + i > 9) {
@@ -548,7 +567,9 @@ class Engine {
 
     // Bottom
     for (let i = 1; i <= this.MAX_HIGHLIGHTED_CELLS; i++) {
-      let bottomCell = this.game.gameContainerElement.querySelector(`.cell_${row + i}_${col}`);
+      let bottomCell = this.game.gameContainerElement.querySelector(
+        `.cell_${row + i}_${col}`
+      );
 
       // Check if we are selecting an unavailable cell
       if (row + i > 9) {
@@ -562,7 +583,9 @@ class Engine {
 
     // Left
     for (let i = 1; i <= this.MAX_HIGHLIGHTED_CELLS; i++) {
-      let leftCell = this.game.gameContainerElement.querySelector(`.cell_${row}_${col - i}`);
+      let leftCell = this.game.gameContainerElement.querySelector(
+        `.cell_${row}_${col - i}`
+      );
 
       // Check if we are selecting an unavailable cell
       if (col - i < 0) {
@@ -576,7 +599,9 @@ class Engine {
   }
 
   resetHighlightedCells() {
-    let highlightedCells = this.game.gameContainerElement.querySelectorAll('.highlighted');
+    let highlightedCells = this.game.gameContainerElement.querySelectorAll(
+      '.highlighted'
+    );
     for (let cell of highlightedCells) {
       cell.classList.remove('highlighted');
     }
@@ -588,10 +613,18 @@ class Engine {
 
     let opponentPlayer = currentPlayer == 0 ? 'player-2' : 'player-1';
 
-    let topCell = this.game.gameContainerElement.querySelector(`.cell_${row - 1}_${col}`);
-    let bottomCell = this.game.gameContainerElement.querySelector(`.cell_${row + 1}_${col}`);
-    let rightCell = this.game.gameContainerElement.querySelector(`.cell_${row}_${col + 1}`);
-    let leftCell = this.game.gameContainerElement.querySelector(`.cell_${row}_${col - 1}`);
+    let topCell = this.game.gameContainerElement.querySelector(
+      `.cell_${row - 1}_${col}`
+    );
+    let bottomCell = this.game.gameContainerElement.querySelector(
+      `.cell_${row + 1}_${col}`
+    );
+    let rightCell = this.game.gameContainerElement.querySelector(
+      `.cell_${row}_${col + 1}`
+    );
+    let leftCell = this.game.gameContainerElement.querySelector(
+      `.cell_${row}_${col - 1}`
+    );
 
     /**
      * Is the `currentPlayer` closer to `opponentPlayer`?
@@ -620,7 +653,9 @@ class Engine {
   }
 
   startCompatMode() {
-    let combatModeModal = this.game.gameContainerElement.querySelector('.combat-mode');
+    let combatModeModal = this.game.gameContainerElement.querySelector(
+      '.combat-mode'
+    );
     combatModeModal.classList.add('visible');
 
     this.updateCombatStats();
@@ -680,15 +715,21 @@ class Engine {
 
   announceTheWinner(winner) {
     // Show Victory Popup
-    let victoryPopup = this.game.gameContainerElement.querySelector('.combat-mode.victory');
+    let victoryPopup = this.game.gameContainerElement.querySelector(
+      '.combat-mode.victory'
+    );
     victoryPopup.classList.add('visible');
 
     // Add winner text
-    let winnerElem = this.game.gameContainerElement.querySelector('.combat-mode.victory .inner h2');
+    let winnerElem = this.game.gameContainerElement.querySelector(
+      '.combat-mode.victory .inner h2'
+    );
     winnerElem.innerHTML = `The winner is: <span>${winner}!</span>`;
 
     // Restart the game
-    let restartBtn = this.game.gameContainerElement.querySelector('.combat-mode.victory .inner .btn');
+    let restartBtn = this.game.gameContainerElement.querySelector(
+      '.combat-mode.victory .inner .btn'
+    );
     restartBtn.addEventListener('click', () => {
       this.restart();
     });
