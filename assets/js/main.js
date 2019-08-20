@@ -826,7 +826,5 @@ class Game {
   }
 }
 
-let game = new Game(document.querySelector('#game1'));
-let game2 = new Game(document.querySelector('#game2'));
+let game = new Game(document.querySelector('#game'));
 game.init();
-game2.init();
