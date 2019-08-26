@@ -27,6 +27,8 @@ class Grid {
         this.game.availableCells.push([row, col]);
       }
     }
+
+    this.resizeGrid();
   }
 
   createGridItem(row, col) {
@@ -36,6 +38,10 @@ class Grid {
     gridItem.setAttribute('data-row', row);
     gridItem.setAttribute('data-col', col);
     return gridItem;
+  }
+
+  resizeGrid() {
+    this.gridContainer.style.gridTemplateColumns = `repeat(${this.gridSize}, 1fr)`;
   }
 }
 
@@ -759,14 +765,15 @@ class Game {
     this.gameGridElement = this.gameContainerElement.querySelector('.grid');
   }
   init() {
+    const GRID_SIZE = 12;
     const PLAYERS = [
       {
         name: 'Police',
         className: 'player-1',
         rowMin: 0,
-        rowMax: 3,
+        rowMax: Math.floor(GRID_SIZE/3),
         colMin: 0,
-        colMax: 9,
+        colMax: GRID_SIZE-1,
         health: 100,
         attack: 10,
         shield: 10
@@ -774,17 +781,17 @@ class Game {
       {
         name: 'Thief',
         className: 'player-2',
-        rowMin: 6,
-        rowMax: 9,
+        rowMin: Math.floor(GRID_SIZE/2),
+        rowMax: GRID_SIZE-1,
         colMin: 0,
-        colMax: 9,
+        colMax: GRID_SIZE-1,
         health: 100,
         attack: 10,
         shield: 10
       }
     ];
     const DISABLED_CELLS = 15;
-    const WEAPONS_COUNT = 4;
+    const WEAPONS_COUNT = 5;
     const WEAPONS = [
       {
         type: 'defense',

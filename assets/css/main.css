@@ -94,12 +94,8 @@ h1 {
 }
 
 .game-container .grid {
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -ms-flex-wrap: wrap;
-      flex-wrap: wrap;
-  width: 300px;
+  display: -ms-grid;
+  display: grid;
   background: #eee;
 }
 
@@ -114,20 +110,7 @@ h1 {
   pointer-events: none;
 }
 
-@media (min-width: 400px) {
-  .game-container .grid {
-    width: 400px;
-  }
-  .game-container .grid .grid-item {
-    width: 40px;
-    height: 40px;
-  }
-}
-
 @media (min-width: 500px) {
-  .game-container .grid {
-    width: 500px;
-  }
   .game-container .grid .grid-item {
     width: 50px;
     height: 50px;
