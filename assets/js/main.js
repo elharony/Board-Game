@@ -27,6 +27,8 @@ class Grid {
         this.game.availableCells.push([row, col]);
       }
     }
+
+    this.resizeGrid();
   }
 
   createGridItem(row, col) {
@@ -36,6 +38,10 @@ class Grid {
     gridItem.setAttribute('data-row', row);
     gridItem.setAttribute('data-col', col);
     return gridItem;
+  }
+
+  resizeGrid() {
+    this.gridContainer.style.gridTemplateColumns = `repeat(${this.gridSize}, 1fr)`;
   }
 }
 
@@ -209,12 +215,13 @@ class Item {
 }
 
 class DimmedCell extends Item {
-  constructor(game) {
+  constructor(GRID_SIZE) {
     super(null, null, null, game);
+    this.GRID_SIZE = GRID_SIZE;
   }
   dimCell() {
-    let randCellRow = getRandomInt(0, 9);
-    let randCellCol = getRandomInt(0, 9);
+    let randCellRow = getRandomInt(0, this.GRID_SIZE-1);
+    let randCellCol = getRandomInt(0, this.GRID_SIZE-1);
 
     // We've found an available cell
     if (this.isAvailableCell(randCellRow, randCellCol)) {
@@ -227,8 +234,9 @@ class DimmedCell extends Item {
 }
 
 class Player extends Item {
-  constructor(player, game) {
+  constructor(GRID_SIZE, player, game) {
     super(null, null, null, game);
+    this.GRID_SIZE = GRID_SIZE;
     this.rowMin = player.rowMin;
     this.rowMax = player.rowMax;
     this.colMin = player.colMin;
@@ -238,8 +246,8 @@ class Player extends Item {
   }
 
   add() {
-    let randCellRow = getRandomInt(0, 9);
-    let randCellCol = getRandomInt(0, 9);
+    let randCellRow = getRandomInt(0, this.GRID_SIZE-1);
+    let randCellCol = getRandomInt(0, this.GRID_SIZE-1);
 
     /* Keep players away */
     if (
@@ -262,15 +270,16 @@ class Player extends Item {
 }
 
 class Weapon extends Item {
-  constructor(weapon, game) {
+  constructor(GRID_SIZE, weapon, game) {
     super(null, null, null, game);
+    this.GRID_SIZE = GRID_SIZE;
     this.className = weapon.className;
     this.add();
   }
 
   add() {
-    let randCellRow = getRandomInt(1, 8);
-    let randCellCol = getRandomInt(1, 8);
+    let randCellRow = getRandomInt(1, this.GRID_SIZE-2);
+    let randCellCol = getRandomInt(1, this.GRID_SIZE-2);
 
     // We've found an available cell
     if (this.isAvailableCell(randCellRow, randCellCol)) {
@@ -756,14 +765,15 @@ class Game {
     this.gameGridElement = this.gameContainerElement.querySelector('.grid');
   }
   init() {
+    const GRID_SIZE = 12;
     const PLAYERS = [
       {
         name: 'Police',
         className: 'player-1',
         rowMin: 0,
-        rowMax: 3,
+        rowMax: Math.floor(GRID_SIZE/3),
         colMin: 0,
-        colMax: 9,
+        colMax: GRID_SIZE-1,
         health: 100,
         attack: 10,
         shield: 10
@@ -771,17 +781,17 @@ class Game {
       {
         name: 'Thief',
         className: 'player-2',
-        rowMin: 6,
-        rowMax: 9,
+        rowMin: Math.floor(GRID_SIZE/2),
+        rowMax: GRID_SIZE-1,
         colMin: 0,
-        colMax: 9,
+        colMax: GRID_SIZE-1,
         health: 100,
         attack: 10,
         shield: 10
       }
     ];
     const DISABLED_CELLS = 15;
-    const WEAPONS_COUNT = 4;
+    const WEAPONS_COUNT = 5;
     const WEAPONS = [
       {
         type: 'defense',
@@ -806,24 +816,24 @@ class Game {
     ];
 
     // Grid
-    new Grid(this.gameGridElement, 10, this);
+    new Grid(this.gameGridElement, GRID_SIZE, this);
 
     // Dimmed Cells
-    const dimmedCells = new DimmedCell(this);
+    const dimmedCells = new DimmedCell(GRID_SIZE, this);
     for (let i = 0; i < DISABLED_CELLS; i++) {
       dimmedCells.dimCell();
     }
 
     // Players
-    new Player(PLAYERS[0], this);
-    new Player(PLAYERS[1], this);
+    new Player(GRID_SIZE, PLAYERS[0], this);
+    new Player(GRID_SIZE, PLAYERS[1], this);
 
     // Weapons
     for (let i = 0; i < WEAPONS_COUNT; i++) {
-      new Weapon(WEAPONS[0], this);
-      new Weapon(WEAPONS[1], this);
-      new Weapon(WEAPONS[2], this);
-      new Weapon(WEAPONS[3], this);
+      new Weapon(GRID_SIZE, WEAPONS[0], this);
+      new Weapon(GRID_SIZE, WEAPONS[1], this);
+      new Weapon(GRID_SIZE, WEAPONS[2], this);
+      new Weapon(GRID_SIZE, WEAPONS[3], this);
     }
 
     // Engine
