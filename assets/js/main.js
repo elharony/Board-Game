@@ -814,7 +814,6 @@ class Game {
         effect: 20
       }
     ];
-    const GRID_SIZE = 10;
 
     // Grid
     new Grid(this.gameGridElement, GRID_SIZE, this);
