@@ -289,9 +289,10 @@ class Weapon extends Item {
 }
 
 class Engine {
-  constructor(players, game) {
+  constructor(players, weapons, game) {
     this.game = game;
     this.players = players;
+    this.weapons = weapons;
     this.playerTurn = 0;
     this.MAX_HIGHLIGHTED_CELLS = 2;
     this.updateStats();
@@ -380,7 +381,7 @@ class Engine {
       landedCell.classList.remove('weapon-attack');
 
       // Increase player stats
-      this.players[currentPlayer].attack += 10;
+      this.players[currentPlayer].attack += this.weapons[1].effect;
 
       // Animate Stats
       this.getPlayerDashboard(currentPlayer)
@@ -396,7 +397,7 @@ class Engine {
       this.updateStats();
     } else if (landedCell.classList.contains('weapon-defense')) {
       landedCell.classList.remove('weapon-defense');
-      this.players[currentPlayer].shield += 10;
+      this.players[currentPlayer].shield += this.weapons[0].effect;
 
       this.getPlayerDashboard(currentPlayer)
         .querySelector('#shield')
@@ -409,7 +410,7 @@ class Engine {
       this.updateStats();
     } else if (landedCell.classList.contains('weapon-health')) {
       landedCell.classList.remove('weapon-health');
-      this.players[currentPlayer].health += 10;
+      this.players[currentPlayer].health += this.weapons[2].effect;
       this.getPlayerDashboard(currentPlayer)
         .querySelector('#health')
         .classList.add('updateStats');
@@ -421,7 +422,7 @@ class Engine {
       this.updateStats();
     } else if (landedCell.classList.contains('weapon-attack-super')) {
       landedCell.classList.remove('weapon-attack-super');
-      this.players[currentPlayer].attack += 20;
+      this.players[currentPlayer].attack += this.weapons[3].effect;
 
       this.getPlayerDashboard(currentPlayer)
         .querySelector('#attack')
@@ -784,19 +785,23 @@ class Game {
     const WEAPONS = [
       {
         type: 'defense',
-        className: 'weapon-defense'
+        className: 'weapon-defense',
+        effect: 10
       },
       {
         type: 'attack',
-        className: 'weapon-attack'
+        className: 'weapon-attack',
+        effect: 10
       },
       {
         type: 'health',
-        className: 'weapon-health'
+        className: 'weapon-health',
+        effect: 10
       },
       {
         type: 'attack',
-        className: 'weapon-attack-super'
+        className: 'weapon-attack-super',
+        effect: 20
       }
     ];
 
@@ -822,7 +827,7 @@ class Game {
     }
 
     // Engine
-    new Engine(PLAYERS, this);
+    new Engine(PLAYERS, WEAPONS, this);
   }
 }
 
